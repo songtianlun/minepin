@@ -2,3 +2,13 @@ Address: 0.0.0.0:8080
 ReadTimeout: 10,
 WriteTimeout: 600,
 Static: public
+
+log:
+  level: debug                # debug->info->warn->error
+  file_name: log/minegin.log  # debug file path
+  max_size_mb: 1              # max log file size
+  max_file_num: 64            # max log file num
+  max_file_day: 7             # max log file day
+  compress: false             # 日志压缩
+  stdout: true                # 显式指定日志输出到 stdout
+  only_stdout: true           # 日志仅输出到 stdout
