@@ -1,6 +1,9 @@
 package utils
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 func PathExists(path string) (bool, error) {
 	_, err := os.Stat(path)
@@ -11,4 +14,8 @@ func PathExists(path string) (bool, error) {
 		return false, nil
 	}
 	return false, err
+}
+
+func P(a ...interface{}) {
+	fmt.Println(a)
 }

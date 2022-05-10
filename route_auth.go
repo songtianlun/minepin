@@ -1,6 +1,7 @@
 package main
 
 import (
+	"minepin/com/log"
 	"minepin/data"
 	"net/http"
 )
@@ -23,7 +24,7 @@ func signup(writer http.ResponseWriter, request *http.Request) {
 func signupAccount(writer http.ResponseWriter, request *http.Request) {
 	err := request.ParseForm()
 	if err != nil {
-		danger(err, "Cannot parse form")
+		log.Error("Cannot parse form")
 	}
 	user := data.User{
 		Name:     request.PostFormValue("name"),
@@ -31,7 +32,7 @@ func signupAccount(writer http.ResponseWriter, request *http.Request) {
 		Password: request.PostFormValue("password"),
 	}
 	if err := user.Create(); err != nil {
-		danger(err, "Cannot create user")
+		log.Error("Cannot create user")
 	}
 	http.Redirect(writer, request, "/login", 302)
 }
@@ -42,12 +43,12 @@ func authenticate(writer http.ResponseWriter, request *http.Request) {
 	err := request.ParseForm()
 	user, err := data.UserByEmail(request.PostFormValue("email"))
 	if err != nil {
-		danger(err, "Cannot find user")
+		log.Error("Cannot find user")
 	}
 	if user.Password == data.Encrypt(request.PostFormValue("password")) {
 		session, err := user.CreateSession()
 		if err != nil {
-			danger(err, "Cannot create session")
+			log.Error("Cannot create session")
 		}
 		cookie := http.Cookie{
 			Name:     "_cookie",
@@ -67,7 +68,7 @@ func authenticate(writer http.ResponseWriter, request *http.Request) {
 func logout(writer http.ResponseWriter, request *http.Request) {
 	cookie, err := request.Cookie("_cookie")
 	if err != http.ErrNoCookie {
-		warning(err, "Failed to get cookie")
+		log.Warn("Failed to get cookie")
 		session := data.Session{Uuid: cookie.Value}
 		session.DeleteByUUID()
 	}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"minepin/com/log"
 	"minepin/data"
 	"net/http"
 )
@@ -26,15 +27,15 @@ func createThread(writer http.ResponseWriter, request *http.Request) {
 	} else {
 		err = request.ParseForm()
 		if err != nil {
-			danger(err, "Cannot parse form")
+			log.Error("Cannot parse form")
 		}
 		user, err := sess.User()
 		if err != nil {
-			danger(err, "Cannot get user from session")
+			log.Error("Cannot get user from session")
 		}
 		topic := request.PostFormValue("topic")
 		if _, err := user.CreateThread(topic); err != nil {
-			danger(err, "Cannot create thread")
+			log.Error("Cannot create thread")
 		}
 		http.Redirect(writer, request, "/", 302)
 	}
@@ -67,11 +68,11 @@ func postThread(writer http.ResponseWriter, request *http.Request) {
 	} else {
 		err = request.ParseForm()
 		if err != nil {
-			danger(err, "Cannot parse form")
+			log.Error("Cannot parse form")
 		}
 		user, err := sess.User()
 		if err != nil {
-			danger(err, "Cannot get user from session")
+			log.Error("Cannot get user from session")
 		}
 		body := request.PostFormValue("body")
 		uuid := request.PostFormValue("uuid")
@@ -80,7 +81,7 @@ func postThread(writer http.ResponseWriter, request *http.Request) {
 			error_message(writer, request, "Cannot read thread")
 		}
 		if _, err := user.CreatePost(thread, body); err != nil {
-			danger(err, "Cannot create post")
+			log.Error("Cannot create post")
 		}
 		url := fmt.Sprint("/thread/read?id=", uuid)
 		http.Redirect(writer, request, url, 302)

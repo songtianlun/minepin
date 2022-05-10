@@ -4,29 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"log"
 	"minepin/data"
 	"net/http"
-	"os"
 	"strings"
 )
-
-//var config Configuration
-var logger *log.Logger
-
-// Convenience function for printing to stdout
-func p(a ...interface{}) {
-	fmt.Println(a)
-}
-
-func init() {
-	//loadConfig()
-	file, err := os.OpenFile("minepin.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalln("Failed to open log file", err)
-	}
-	logger = log.New(file, "INFO ", log.Ldate|log.Ltime|log.Lshortfile)
-}
 
 // Convenience function to redirect to the error message page
 func error_message(writer http.ResponseWriter, request *http.Request, msg string) {
@@ -66,22 +47,6 @@ func generateHTML(writer http.ResponseWriter, data interface{}, filenames ...str
 
 	templates := template.Must(template.ParseFiles(files...))
 	templates.ExecuteTemplate(writer, "layout", data)
-}
-
-// for logging
-func info(args ...interface{}) {
-	logger.SetPrefix("INFO ")
-	logger.Println(args...)
-}
-
-func danger(args ...interface{}) {
-	logger.SetPrefix("ERROR ")
-	logger.Println(args...)
-}
-
-func warning(args ...interface{}) {
-	logger.SetPrefix("WARNING ")
-	logger.Println(args...)
 }
 
 // version

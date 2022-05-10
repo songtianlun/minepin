@@ -3,12 +3,14 @@ package main
 import (
 	"minepin/com/cfg"
 	"minepin/com/http"
+	"minepin/com/utils"
 )
 
 func main() {
 	initCfg()
+	initLog()
 	initHandle()
 
-	p("ChitChat", version(), "started at", cfg.GetString("Address"))
+	utils.P("ChitChat", version(), "started at", cfg.GetString("Address"))
 	http.Run(cfg.GetString("Address"))
 }

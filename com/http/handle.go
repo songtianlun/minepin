@@ -2,6 +2,7 @@ package http
 
 import (
 	"minepin/com/cfg"
+	"minepin/com/log"
 	"net/http"
 	"time"
 )
@@ -33,9 +34,13 @@ func Run(address string) {
 	server := &http.Server{
 		Addr:           address,
 		Handler:        mux,
-		ReadTimeout:    time.Duration(cfg.GetInt("ReadTimeout") * int64(time.Second)),
-		WriteTimeout:   time.Duration(cfg.GetInt("WriteTimeout") * int64(time.Second)),
+		ReadTimeout:    time.Duration(cfg.GetInt64("ReadTimeout") * int64(time.Second)),
+		WriteTimeout:   time.Duration(cfg.GetInt64("WriteTimeout") * int64(time.Second)),
 		MaxHeaderBytes: 1 << 20,
 	}
-	server.ListenAndServe()
+	err := server.ListenAndServe()
+	if err != nil {
+		log.ErrorF("http server error: %s", err.Error())
+		return
+	}
 }

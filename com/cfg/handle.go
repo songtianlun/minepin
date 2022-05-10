@@ -51,7 +51,9 @@ func Get(n string, noErr bool) interface{} {
 
 	if c.typ == "string" {
 		v = strings.TrimSpace(viper.GetString(n))
-	} else if c.typ == "int" || c.typ == "int64" {
+	} else if c.typ == "int" {
+		v = viper.GetInt(n)
+	} else if c.typ == "int64" {
 		// 默认获取 64 位 int，避免跨平台带来的问题
 		v = viper.GetInt64(n)
 	} else if c.typ == "bool" {
@@ -65,7 +67,9 @@ func Get(n string, noErr bool) interface{} {
 }
 
 func GetString(n string) string { return Get(n, false).(string) }
-func GetInt(n string) int64     { return Get(n, false).(int64) }
+func GetInt(n string) int       { return Get(n, false).(int) }
+func GetInt64(n string) int64   { return Get(n, false).(int64) }
+func GetBool(n string) bool     { return Get(n, false).(bool) }
 
 func (c *Config) initConfig() error {
 	var cfgFile string

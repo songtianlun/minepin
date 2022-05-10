@@ -3,3 +3,4 @@
 minepin
 tmp
 .idea
+log/*.log
