@@ -4,3 +4,4 @@ minepin
 tmp
 .idea
 log/*.log
+.air.toml
