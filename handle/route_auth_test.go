@@ -1,4 +1,4 @@
-package main
+package handle
 
 import (
 	"net/http"
@@ -9,7 +9,7 @@ import (
 
 func Test_Get_Login(t *testing.T) {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/login", login)
+	mux.HandleFunc("/login", Login)
 
 	writer := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", "/login", nil)

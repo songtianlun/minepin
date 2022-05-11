@@ -11,6 +11,6 @@ func main() {
 	initLog()
 	initHandle()
 
-	utils.P("ChitChat", version(), "started at", cfg.GetString("Address"))
+	utils.P("ChitChat", utils.Version(), "started at", cfg.GetString("Address"))
 	http.Run(cfg.GetString("Address"))
 }

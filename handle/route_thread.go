@@ -1,27 +1,28 @@
-package main
+package handle
 
 import (
 	"fmt"
 	"minepin/com/log"
+	"minepin/com/utils"
 	"minepin/data"
 	"net/http"
 )
 
 // GET /threads/new
 // Show the new thread form page
-func newThread(writer http.ResponseWriter, request *http.Request) {
-	_, err := session(writer, request)
+func NewThread(writer http.ResponseWriter, request *http.Request) {
+	_, err := utils.Session(writer, request)
 	if err != nil {
 		http.Redirect(writer, request, "/login", 302)
 	} else {
-		generateHTML(writer, nil, "layout", "private.navbar", "new.thread")
+		utils.GenerateHTML(writer, nil, "layout", "private.navbar", "new.thread")
 	}
 }
 
 // POST /signup
 // Create the user account
-func createThread(writer http.ResponseWriter, request *http.Request) {
-	sess, err := session(writer, request)
+func CreateThread(writer http.ResponseWriter, request *http.Request) {
+	sess, err := utils.Session(writer, request)
 	if err != nil {
 		http.Redirect(writer, request, "/login", 302)
 	} else {
@@ -43,26 +44,26 @@ func createThread(writer http.ResponseWriter, request *http.Request) {
 
 // GET /thread/read
 // Show the details of the thread, including the posts and the form to write a post
-func readThread(writer http.ResponseWriter, request *http.Request) {
+func ReadThread(writer http.ResponseWriter, request *http.Request) {
 	vals := request.URL.Query()
 	uuid := vals.Get("id")
 	thread, err := data.ThreadByUUID(uuid)
 	if err != nil {
-		error_message(writer, request, "Cannot read thread")
+		utils.Error_message(writer, request, "Cannot read thread")
 	} else {
-		_, err := session(writer, request)
+		_, err := utils.Session(writer, request)
 		if err != nil {
-			generateHTML(writer, &thread, "layout", "public.navbar", "public.thread")
+			utils.GenerateHTML(writer, &thread, "layout", "public.navbar", "public.thread")
 		} else {
-			generateHTML(writer, &thread, "layout", "private.navbar", "private.thread")
+			utils.GenerateHTML(writer, &thread, "layout", "private.navbar", "private.thread")
 		}
 	}
 }
 
 // POST /thread/post
 // Create the post
-func postThread(writer http.ResponseWriter, request *http.Request) {
-	sess, err := session(writer, request)
+func PostThread(writer http.ResponseWriter, request *http.Request) {
+	sess, err := utils.Session(writer, request)
 	if err != nil {
 		http.Redirect(writer, request, "/login", 302)
 	} else {
@@ -78,7 +79,7 @@ func postThread(writer http.ResponseWriter, request *http.Request) {
 		uuid := request.PostFormValue("uuid")
 		thread, err := data.ThreadByUUID(uuid)
 		if err != nil {
-			error_message(writer, request, "Cannot read thread")
+			utils.Error_message(writer, request, "Cannot read thread")
 		}
 		if _, err := user.CreatePost(thread, body); err != nil {
 			log.Error("Cannot create post")

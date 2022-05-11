@@ -5,6 +5,7 @@ import (
 	"minepin/com/cfg"
 	"minepin/com/http"
 	"minepin/com/log"
+	"minepin/handle"
 )
 
 func initHandle() {
@@ -12,23 +13,23 @@ func initHandle() {
 	http.RegisterFile("/static/", cfg.GetString("Static"), true)
 
 	// index
-	http.RegisterHandle("/", index)
+	http.RegisterHandle("/", handle.Index)
 
 	// error
-	http.RegisterHandle("/err", err)
+	http.RegisterHandle("/err", handle.Err)
 
 	// defined in route_auth.go
-	http.RegisterHandle("/login", login)
-	http.RegisterHandle("/logout", logout)
-	http.RegisterHandle("/signup", signup)
-	http.RegisterHandle("/signup_account", signupAccount)
-	http.RegisterHandle("/authenticate", authenticate)
+	http.RegisterHandle("/login", handle.Login)
+	http.RegisterHandle("/logout", handle.Logout)
+	http.RegisterHandle("/signup", handle.Signup)
+	http.RegisterHandle("/signup_account", handle.SignupAccount)
+	http.RegisterHandle("/authenticate", handle.Authenticate)
 
 	// defined in route_thread.go
-	http.RegisterHandle("/thread/new", newThread)
-	http.RegisterHandle("/thread/create", createThread)
-	http.RegisterHandle("/thread/post", postThread)
-	http.RegisterHandle("/thread/read", readThread)
+	http.RegisterHandle("/thread/new", handle.NewThread)
+	http.RegisterHandle("/thread/create", handle.CreateThread)
+	http.RegisterHandle("/thread/post", handle.PostThread)
+	http.RegisterHandle("/thread/read", handle.ReadThread)
 }
 
 func initCfg() {
