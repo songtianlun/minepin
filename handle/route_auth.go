@@ -1,9 +1,11 @@
 package handle
 
 import (
+	"minepin/com/constvar"
 	"minepin/com/log"
 	"minepin/com/utils"
-	"minepin/data"
+	"minepin/com/web"
+	"minepin/model"
 	"net/http"
 )
 
@@ -17,7 +19,7 @@ func Login(writer http.ResponseWriter, request *http.Request) {
 // GET /signup
 // Show the Signup page
 func Signup(writer http.ResponseWriter, request *http.Request) {
-	utils.GenerateHTML(writer, nil, "login.layout", "public.navbar", "signup")
+	web.GenerateHTML(writer, nil, "login.layout", "public.navbar", "signup")
 }
 
 // POST /signup
@@ -27,13 +29,14 @@ func SignupAccount(writer http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		log.Error("Cannot parse form")
 	}
-	user := data.User{
+	user := model.User{
+		Role:     constvar.UserRegistered,
 		Name:     request.PostFormValue("name"),
 		Email:    request.PostFormValue("email"),
 		Password: request.PostFormValue("password"),
 	}
 	if err := user.Create(); err != nil {
-		log.Error("Cannot create user")
+		log.Error("Cannot create user - %v", err.Error())
 	}
 	http.Redirect(writer, request, "/login", 302)
 }
@@ -42,18 +45,22 @@ func SignupAccount(writer http.ResponseWriter, request *http.Request) {
 // Authenticate the user given the email and password
 func Authenticate(writer http.ResponseWriter, request *http.Request) {
 	err := request.ParseForm()
-	user, err := data.UserByEmail(request.PostFormValue("email"))
+	//user, err := data.UserByEmail(request.PostFormValue("email"))
+	//if err != nil {
+	//	log.Error("Cannot find user")
+	//}
+	user, err := model.UserByEmail(request.PostFormValue("email"))
 	if err != nil {
 		log.Error("Cannot find user")
 	}
-	if user.Password == data.Encrypt(request.PostFormValue("password")) {
+	if user.Password == utils.Encrypt(request.PostFormValue("password")) {
 		session, err := user.CreateSession()
 		if err != nil {
-			log.Error("Cannot create session")
+			log.ErrorF("Cannot create session - %v", err.Error())
 		}
 		cookie := http.Cookie{
 			Name:     "_cookie",
-			Value:    session.Uuid,
+			Value:    session.UUID,
 			HttpOnly: true,
 		}
 		http.SetCookie(writer, &cookie)
@@ -70,8 +77,7 @@ func Logout(writer http.ResponseWriter, request *http.Request) {
 	cookie, err := request.Cookie("_cookie")
 	if err != http.ErrNoCookie {
 		log.Warn("Failed to get cookie")
-		session := data.Session{Uuid: cookie.Value}
-		session.DeleteByUUID()
+		model.DeleteSession(cookie.Value)
 	}
 	http.Redirect(writer, request, "/", 302)
 }

@@ -3,39 +3,41 @@ package main
 import (
 	"fmt"
 	"minepin/com/cfg"
-	"minepin/com/http"
+	"minepin/com/db"
 	"minepin/com/log"
+	"minepin/com/web"
 	"minepin/handle"
+	"minepin/model"
 )
 
 func initHandle() {
 	// static file
-	http.RegisterFile("/static/", cfg.GetString("Static"), true)
+	web.RegisterFile("/static/", cfg.GetString("Static"), true)
 
 	// index
-	http.RegisterHandle("/", handle.Index)
+	web.RegisterHandle("/", handle.Index)
 
 	// error
-	http.RegisterHandle("/err", handle.Err)
+	web.RegisterHandle("/err", handle.Err)
 
 	// defined in route_auth.go
-	http.RegisterHandle("/login", handle.Login)
-	http.RegisterHandle("/logout", handle.Logout)
-	http.RegisterHandle("/signup", handle.Signup)
-	http.RegisterHandle("/signup_account", handle.SignupAccount)
-	http.RegisterHandle("/authenticate", handle.Authenticate)
+	web.RegisterHandle("/login", handle.Login)
+	web.RegisterHandle("/logout", handle.Logout)
+	web.RegisterHandle("/signup", handle.Signup)
+	web.RegisterHandle("/signup_account", handle.SignupAccount)
+	web.RegisterHandle("/authenticate", handle.Authenticate)
 
 	// defined in route_thread.go
-	http.RegisterHandle("/thread/new", handle.NewThread)
-	http.RegisterHandle("/thread/create", handle.CreateThread)
-	http.RegisterHandle("/thread/post", handle.PostThread)
-	http.RegisterHandle("/thread/read", handle.ReadThread)
+	web.RegisterHandle("/thread/new", handle.NewThread)
+	web.RegisterHandle("/thread/create", handle.CreateThread)
+	web.RegisterHandle("/thread/post", handle.PostThread)
+	web.RegisterHandle("/thread/read", handle.ReadThread)
 }
 
 func initCfg() {
 	// 首先完成配置项的注册
 	cfg.RegisterCfg("test", "test", "string")
-	cfg.RegisterCfg("Address", "0.0.0.0:8080", "string")
+	cfg.RegisterCfg("Address", "0.0.0.0:6008", "string")
 	cfg.RegisterCfg("ReadTimeout", 10, "int64")
 	cfg.RegisterCfg("WriteTimeout", 600, "int64")
 	cfg.RegisterCfg("Static", "public", "string")
@@ -48,6 +50,12 @@ func initCfg() {
 	cfg.RegisterCfg("log.compress", false, "bool")
 	cfg.RegisterCfg("log.stdout", true, "bool")
 	cfg.RegisterCfg("log.only_stdout", false, "bool")
+	// db
+	cfg.RegisterCfg("db.type", "sqlite", "string")
+	cfg.RegisterCfg("db.addr", "./minepin.db", "string")
+	cfg.RegisterCfg("db.name", "minepin", "string")
+	cfg.RegisterCfg("db.username", "minepin", "string")
+	cfg.RegisterCfg("db.password", "minepin", "string")
 
 	// 之后再进行初始化
 	err := cfg.Init("")
@@ -71,4 +79,13 @@ func initLog() {
 		cfg.GetInt("log.max_file_num"),
 		cfg.GetInt("log.max_file_day"),
 		cfg.GetBool("log.compress"))
+}
+
+func initDB() {
+	db.InitDB(&db.CfgDb{Typ: "sqlite", Addr: "./minepin1.db"})
+
+	db.MigrateModel(model.User{})
+	db.MigrateModel(model.Session{})
+	db.MigrateModel(model.Thread{})
+	db.MigrateModel(model.Post{})
 }

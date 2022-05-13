@@ -1,6 +1,8 @@
-package http
+package web
 
 import (
+	"fmt"
+	"html/template"
 	"minepin/com/cfg"
 	"minepin/com/log"
 	"net/http"
@@ -11,7 +13,7 @@ type Handle func(w http.ResponseWriter, r *http.Request)
 
 var mux *http.ServeMux
 
-// Init initializes the http server
+// Init initializes the web server
 // 导入时自动实例化
 func init() {
 	mux = http.NewServeMux()
@@ -40,7 +42,20 @@ func Run(address string) {
 	}
 	err := server.ListenAndServe()
 	if err != nil {
-		log.ErrorF("http server error: %s", err.Error())
+		log.ErrorF("web server error: %s", err.Error())
 		return
+	}
+}
+
+func GenerateHTML(writer http.ResponseWriter, data interface{}, filenames ...string) {
+	var files []string
+	for _, file := range filenames {
+		files = append(files, fmt.Sprintf("templates/%s.html", file))
+	}
+
+	templates := template.Must(template.ParseFiles(files...))
+	err := templates.ExecuteTemplate(writer, "layout", data)
+	if err != nil {
+		log.ErrorF("Generate HTML error: %v", err.Error())
 	}
 }

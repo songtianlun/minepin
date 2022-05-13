@@ -2,15 +2,16 @@ package main
 
 import (
 	"minepin/com/cfg"
-	"minepin/com/http"
 	"minepin/com/utils"
+	"minepin/com/web"
 )
 
 func main() {
 	initCfg()
 	initLog()
+	initDB()
 	initHandle()
 
 	utils.P("ChitChat", utils.Version(), "started at", cfg.GetString("Address"))
-	http.Run(cfg.GetString("Address"))
+	web.Run(cfg.GetString("Address"))
 }

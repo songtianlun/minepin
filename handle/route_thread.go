@@ -4,25 +4,26 @@ import (
 	"fmt"
 	"minepin/com/log"
 	"minepin/com/utils"
-	"minepin/data"
+	"minepin/com/web"
+	"minepin/model"
 	"net/http"
 )
 
 // GET /threads/new
 // Show the new thread form page
 func NewThread(writer http.ResponseWriter, request *http.Request) {
-	_, err := utils.Session(writer, request)
+	_, err := model.CheckSession(request)
 	if err != nil {
 		http.Redirect(writer, request, "/login", 302)
 	} else {
-		utils.GenerateHTML(writer, nil, "layout", "private.navbar", "new.thread")
+		web.GenerateHTML(writer, nil, "layout", "private.navbar", "new.thread")
 	}
 }
 
 // POST /signup
 // Create the user account
 func CreateThread(writer http.ResponseWriter, request *http.Request) {
-	sess, err := utils.Session(writer, request)
+	sess, err := model.CheckSession(request)
 	if err != nil {
 		http.Redirect(writer, request, "/login", 302)
 	} else {
@@ -47,15 +48,15 @@ func CreateThread(writer http.ResponseWriter, request *http.Request) {
 func ReadThread(writer http.ResponseWriter, request *http.Request) {
 	vals := request.URL.Query()
 	uuid := vals.Get("id")
-	thread, err := data.ThreadByUUID(uuid)
+	thread, err := model.ThreadByUUID(uuid)
 	if err != nil {
 		utils.Error_message(writer, request, "Cannot read thread")
 	} else {
-		_, err := utils.Session(writer, request)
+		_, err := model.CheckSession(request)
 		if err != nil {
-			utils.GenerateHTML(writer, &thread, "layout", "public.navbar", "public.thread")
+			web.GenerateHTML(writer, &thread, "layout", "public.navbar", "public.thread")
 		} else {
-			utils.GenerateHTML(writer, &thread, "layout", "private.navbar", "private.thread")
+			web.GenerateHTML(writer, &thread, "layout", "private.navbar", "private.thread")
 		}
 	}
 }
@@ -63,7 +64,7 @@ func ReadThread(writer http.ResponseWriter, request *http.Request) {
 // POST /thread/post
 // Create the post
 func PostThread(writer http.ResponseWriter, request *http.Request) {
-	sess, err := utils.Session(writer, request)
+	sess, err := model.CheckSession(request)
 	if err != nil {
 		http.Redirect(writer, request, "/login", 302)
 	} else {
@@ -77,7 +78,7 @@ func PostThread(writer http.ResponseWriter, request *http.Request) {
 		}
 		body := request.PostFormValue("body")
 		uuid := request.PostFormValue("uuid")
-		thread, err := data.ThreadByUUID(uuid)
+		thread, err := model.ThreadByUUID(uuid)
 		if err != nil {
 			utils.Error_message(writer, request, "Cannot read thread")
 		}
