@@ -3,7 +3,7 @@ package constvar
 type UserType uint32
 
 const (
-	DefaultCfgEnvPrefix = "MINEPIN"
+	DefaultCfgEnvPrefix = ""
 	DefaultCfgPath      = "./"
 	DefaultCfgName      = "config"
 	DefaultCfgType      = "yaml"

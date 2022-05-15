@@ -4,6 +4,7 @@ import (
 	"minepin/com/cfg"
 	"minepin/com/utils"
 	"minepin/com/web"
+	"strconv"
 )
 
 func main() {
@@ -12,6 +13,7 @@ func main() {
 	initDB()
 	initHandle()
 
-	utils.P("ChitChat", utils.Version(), "started at", cfg.GetString("Address"))
-	web.Run(cfg.GetString("Address"))
+	Addr := ":" + strconv.FormatInt(cfg.GetInt64("Port"), 10)
+	utils.P("ChitChat", utils.Version(), "started at: ", Addr)
+	web.Run(Addr)
 }

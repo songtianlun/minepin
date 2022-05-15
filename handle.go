@@ -38,7 +38,8 @@ func initHandle() {
 
 func initCfg() {
 	// 首先完成配置项的注册
-	cfg.RegisterCfg("Address", ":6008", "string")
+	cfg.RegisterCfg("Port", 6008, "int64")
+	//cfg.RegisterCfg("Address", "0.0.0.0:6008", "string")
 	cfg.RegisterCfg("ReadTimeout", 10, "int64")
 	cfg.RegisterCfg("WriteTimeout", 600, "int64")
 	cfg.RegisterCfg("Static", "public", "string")
@@ -64,12 +65,6 @@ func initCfg() {
 	if err != nil {
 		panic(fmt.Sprintf("init cfg failed: %s", err))
 	}
-
-	// 初始化结束后配置文件正常存取
-	fmt.Printf("get cfg %v\n", cfg.Get("address", false))
-	fmt.Printf("get cfg %v\n", cfg.Get("ReadTimeout", false))
-	fmt.Printf("get cfg %v\n", cfg.Get("WriteTimeout", false))
-	fmt.Printf("get cfg %v\n", cfg.Get("Static", false))
 }
 
 func initLog() {
