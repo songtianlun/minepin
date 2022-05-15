@@ -42,7 +42,7 @@ func Run(address string) {
 	}
 	err := server.ListenAndServe()
 	if err != nil {
-		log.ErrorF("web server error: %s", err.Error())
+		log.InfoF("web server error: %s", err.Error())
 		return
 	}
 }

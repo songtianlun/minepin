@@ -12,7 +12,7 @@ func MinePinIndex(writer http.ResponseWriter, request *http.Request) {
 	//pins, err := model.Pins()
 	sess, err := model.CheckSession(request)
 	if err != nil {
-		http.Redirect(writer, request, "/login", 302)
+		web.GenerateHTML(writer, nil, "layout", "public.navbar", "index")
 	} else {
 		user, _ := sess.User()
 		pins, err := user.PinList()

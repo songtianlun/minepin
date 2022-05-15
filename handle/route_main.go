@@ -1,13 +1,12 @@
 package handle
 
 import (
-	"minepin/com/utils"
 	"minepin/com/web"
 	"minepin/model"
 	"net/http"
 )
 
-// GET /err?msg=
+// Err GET /err?msg=
 // shows the error message page
 func Err(writer http.ResponseWriter, request *http.Request) {
 	val := request.URL.Query()
@@ -21,15 +20,10 @@ func Err(writer http.ResponseWriter, request *http.Request) {
 }
 
 func Index(writer http.ResponseWriter, request *http.Request) {
-	threads, err := model.Threads()
+	_, err := model.CheckSession(request)
 	if err != nil {
-		utils.Error_message(writer, request, "Cannot get threads")
+		web.GenerateHTML(writer, nil, "layout", "public.navbar", "index")
 	} else {
-		_, err := model.CheckSession(request)
-		if err != nil {
-			web.GenerateHTML(writer, threads, "layout", "public.navbar", "index")
-		} else {
-			web.GenerateHTML(writer, threads, "layout", "private.navbar", "index")
-		}
+		web.GenerateHTML(writer, nil, "layout", "private.navbar", "index")
 	}
 }

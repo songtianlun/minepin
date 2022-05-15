@@ -71,6 +71,9 @@ func Check(sid string) (s Session, err error) {
 
 func CheckSession(request *http.Request) (session Session, err error) {
 	cookie, err := request.Cookie("_cookie")
+	if err != nil {
+		return Session{}, err
+	}
 	session, err = Check(cookie.Value)
 	if err != nil {
 		return Session{}, err

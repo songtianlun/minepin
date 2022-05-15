@@ -27,12 +27,6 @@ func initHandle() {
 	web.RegisterHandle("/signup_account", handle.SignupAccount)
 	web.RegisterHandle("/authenticate", handle.Authenticate)
 
-	// defined in route_thread.go
-	web.RegisterHandle("/thread/new", handle.NewThread)
-	web.RegisterHandle("/thread/create", handle.CreateThread)
-	web.RegisterHandle("/thread/post", handle.PostThread)
-	web.RegisterHandle("/thread/read", handle.ReadThread)
-
 	// defined minepin
 	web.RegisterHandle("/minepin", handle.MinePinIndex)
 	web.RegisterHandle("/pin/new", handle.NewPin)
@@ -44,7 +38,7 @@ func initHandle() {
 
 func initCfg() {
 	// 首先完成配置项的注册
-	cfg.RegisterCfg("Address", "0.0.0.0:6008", "string")
+	cfg.RegisterCfg("Address", ":6008", "string")
 	cfg.RegisterCfg("ReadTimeout", 10, "int64")
 	cfg.RegisterCfg("WriteTimeout", 600, "int64")
 	cfg.RegisterCfg("Static", "public", "string")
@@ -89,11 +83,9 @@ func initLog() {
 }
 
 func initDB() {
-	db.InitDB(&db.CfgDb{Typ: "sqlite", Addr: "./minepin1.db"})
+	db.InitDB(&db.CfgDb{Typ: "sqlite", Addr: cfg.GetString("db.addr")})
 
 	db.MigrateModel(model.User{})
 	db.MigrateModel(model.Session{})
-	db.MigrateModel(model.Thread{})
-	db.MigrateModel(model.Post{})
 	db.MigrateModel(model.Pin{})
 }
