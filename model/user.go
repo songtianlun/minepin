@@ -1,8 +1,10 @@
 package model
 
 import (
+	"fmt"
 	"minepin/com/constvar"
 	"minepin/com/db"
+	"minepin/com/log"
 	"minepin/com/utils"
 	"net/http"
 )
@@ -13,6 +15,8 @@ type User struct {
 	Name     string            `json:"name" gorm:"column:name;not null;default:-" validate:"min=1,max=128"`
 	Email    string            `json:"email" gorm:"column:email;unique" validate:"max=64"`
 	Password string            `json:"password" gorm:"column:password;not null" validate:"min=5,max=128"`
+	Sessions []Session
+	Pins     []Pin
 }
 
 type Session struct {
@@ -31,7 +35,7 @@ func (u *User) CreateSession() (session Session, err error) {
 		Email:  u.Email,
 		UserId: u.Id,
 	}
-	err = db.DB.Create(&session).Error
+	err = db.DB.Model(&u).Association("Sessions").Append(&session)
 	return
 }
 
@@ -45,6 +49,10 @@ func (s *Session) User() (user User, err error) {
 	return
 }
 
+func (s *Session) Delete() error {
+	return db.DB.Delete(&s).Error
+}
+
 func UserByEmail(email string) (u User, err error) {
 	d := db.DB.Where("email = ?", email).First(&u)
 	err = d.Error
@@ -52,6 +60,11 @@ func UserByEmail(email string) (u User, err error) {
 }
 
 func Check(sid string) (s Session, err error) {
+	if sid == "" {
+		err = fmt.Errorf("get a null session id.")
+		log.Error(err.Error())
+		return
+	}
 	err = db.DB.Where("uuid = ?", sid).First(&s).Error
 	return
 }
@@ -59,6 +72,9 @@ func Check(sid string) (s Session, err error) {
 func CheckSession(request *http.Request) (session Session, err error) {
 	cookie, err := request.Cookie("_cookie")
 	session, err = Check(cookie.Value)
+	if err != nil {
+		return Session{}, err
+	}
 	return
 }
 

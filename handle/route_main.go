@@ -10,12 +10,13 @@ import (
 // GET /err?msg=
 // shows the error message page
 func Err(writer http.ResponseWriter, request *http.Request) {
-	vals := request.URL.Query()
+	val := request.URL.Query()
+	msg := val.Get("msg")
 	_, err := model.CheckSession(request)
 	if err != nil {
-		web.GenerateHTML(writer, vals, "layout", "public.navbar", "index")
+		web.GenerateHTML(writer, msg, "layout", "public.navbar", "error")
 	} else {
-		web.GenerateHTML(writer, vals, "layout", "private.navbar", "index")
+		web.GenerateHTML(writer, msg, "layout", "private.navbar", "error")
 	}
 }
 

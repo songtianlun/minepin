@@ -1,0 +1,22 @@
+{{ define "content" }}
+<p class="lead">
+    <form action="/pin/new">
+    <button type="submit" class="btn btn-primary btn-lg btn-block">📌 Pin</button>
+    </form>
+</p>
+
+{{ range . }}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="lead"> <i class="fa fa-comment-o"></i> {{ .Location }}</span>
+    </div>
+    <div class="panel-body">
+        {{ .Note }} - {{ .CreatedAtDate }}.
+        <div class="pull-right">
+            <a href="/pin/edit?pid={{.UUID }}">Edit</a>
+        </div>
+    </div>
+</div>
+{{ end }}
+
+{{ end }}

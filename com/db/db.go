@@ -6,7 +6,7 @@ import (
 	"minepin/com/log"
 )
 
-var MapDB = make(map[string]interface{})
+//var MapDB = make(map[string]interface{})
 
 type CfgDb struct {
 	Typ      string
@@ -15,10 +15,6 @@ type CfgDb struct {
 	Passwd   string
 	Name     string
 }
-
-//type Database struct {
-//	DB *gorm.DB
-//}
 
 var DB *gorm.DB
 
@@ -31,29 +27,16 @@ func openSqliteDB(path string) *gorm.DB {
 	return db
 }
 
-//func RegisterModel(name string, model interface{}) {
-//	_, ok := MapDB[name]
-//	if ok {
-//		panic(fmt.Sprintf("DB Model %s is already registered", name))
-//	}
-//	MapDB[name] = model
-//}
-
-//func migrateModel() {
-//	for _, v := range MapDB {
-//		err := DB.AutoMigrate(v)
-//		if err != nil {
-//			panic("fail to auto migrate db: " + err.Error())
-//		}
-//	}
-//}
-
 func MigrateModel(model interface{}) {
 	err := DB.AutoMigrate(&model)
 	if err != nil {
 		panic("fail to auto migrate db: " + err.Error())
 	}
 }
+
+//func CheckACL(db *gorm.DB) {
+//	log.Error("Check ACL!")
+//}
 
 func InitDB(c *CfgDb) {
 	var gdb *gorm.DB
@@ -69,5 +52,10 @@ func InitDB(c *CfgDb) {
 	DB = gdb
 	//DB = &Database{
 	//	DB: gdb,
+	//}
+
+	//err := DB.Callback().Query().Register("check_acl", CheckACL)
+	//if err != nil {
+	//	log.Error("Error of Register Callback - " + err.Error())
 	//}
 }

@@ -1,0 +1,53 @@
+{{ define "content" }}
+
+<form role="form" action="/pin/update" method="post">
+  <div class="lead">编辑：{{ .Location }}</div>
+  <div class="raw">
+    <div class="col-md-6">
+      <div>
+        <div class="form-group">
+          <label for="suggestId">位置:</label>
+          <input type="text" class="form-control" id="suggestId" name="location" value="{{ .Location }}" />
+        </div>
+        <div class="form-group">
+          <label for="longitude">经度:</label>
+          <input type="text" class="form-control" id="longitude" name="longitude" value="{{ .Lng }}" />
+        </div>
+        <div class="form-group">
+          <label for="latitude">纬度:</label>
+          <input type="text" class="form-control" id="latitude" name="latitude" value="{{ .Lat }}" />
+        </div>
+        <div class="form-group">
+          <label for="note">备注:</label>
+          <input type="text" class="form-control" id="note" name="note" value="{{ .Note }}" />
+        </div>
+        <input type="hidden" name="uuid" value="{{ .UUID }}">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div id="l-map" style="margin: 20px auto;height: 300px;"></div>
+    </div>
+  </div>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
+</form>
+
+<script type="text/javascript">
+  // 百度地图API功能
+  function G(id) {
+    return document.getElementById(id);
+  }
+
+  var map = new BMapGL.Map("l-map");
+  map.centerAndZoom(new BMapGL.Point(116.404, 39.928), 15);
+  // map.centerAndZoom("北京",12);                   // 初始化地图,设置城市和地图级别。
+  map.enableScrollWheelZoom(true);
+  // 增加点选事件，实现点选位置
+  map.addEventListener('click', function (e) {
+    map.clearOverlays()
+    map.addOverlay(new BMapGL.Marker(new BMapGL.Point(e.latlng.lng, e.latlng.lat)));
+    document.getElementById("longitude").value=e.latlng.lng
+    document.getElementById("latitude").value=e.latlng.lat
+  });
+</script>
+
+{{ end }}

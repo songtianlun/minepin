@@ -32,15 +32,22 @@ func initHandle() {
 	web.RegisterHandle("/thread/create", handle.CreateThread)
 	web.RegisterHandle("/thread/post", handle.PostThread)
 	web.RegisterHandle("/thread/read", handle.ReadThread)
+
+	// defined minepin
+	web.RegisterHandle("/minepin", handle.MinePinIndex)
+	web.RegisterHandle("/pin/new", handle.NewPin)
+	web.RegisterHandle("/pin/create", handle.CreatePin)
+	web.RegisterHandle("/pin/edit", handle.EditPin)
+	web.RegisterHandle("/pin/update", handle.UpdatePin)
 }
 
 func initCfg() {
 	// 首先完成配置项的注册
-	cfg.RegisterCfg("test", "test", "string")
 	cfg.RegisterCfg("Address", "0.0.0.0:6008", "string")
 	cfg.RegisterCfg("ReadTimeout", 10, "int64")
 	cfg.RegisterCfg("WriteTimeout", 600, "int64")
 	cfg.RegisterCfg("Static", "public", "string")
+	cfg.RegisterCfg("SessionTimeoutHour", 6, "int64")
 	// log
 	cfg.RegisterCfg("log.level", "info", "string")
 	cfg.RegisterCfg("log.file_name", "log/minegin.log", "string")
@@ -64,7 +71,6 @@ func initCfg() {
 	}
 
 	// 初始化结束后配置文件正常存取
-	fmt.Printf("get cfg %s\n", cfg.Get("test", false))
 	fmt.Printf("get cfg %v\n", cfg.Get("address", false))
 	fmt.Printf("get cfg %v\n", cfg.Get("ReadTimeout", false))
 	fmt.Printf("get cfg %v\n", cfg.Get("WriteTimeout", false))
@@ -88,4 +94,5 @@ func initDB() {
 	db.MigrateModel(model.Session{})
 	db.MigrateModel(model.Thread{})
 	db.MigrateModel(model.Post{})
+	db.MigrateModel(model.Pin{})
 }

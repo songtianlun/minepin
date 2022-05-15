@@ -18,3 +18,7 @@ func (bm *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
 	bm.UUID = uuid.New().String()
 	return
 }
+
+func (bm *BaseModel) CreatedAtDate() string {
+	return bm.CreatedAt.Format("Jan 2, 2006 at 3:04pm")
+}
