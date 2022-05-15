@@ -62,16 +62,19 @@ func CreatePin(writer http.ResponseWriter, request *http.Request) {
 func EditPin(writer http.ResponseWriter, request *http.Request) {
 	val := request.URL.Query()
 	uuid := val.Get("pid")
-	pin, err := model.GetPinByUUID(uuid)
+	sess, err := model.CheckSession(request)
 	if err != nil {
-		utils.Error_message(writer, request, "Cannot read thread")
+		http.Redirect(writer, request, "/login", 302)
 	} else {
-		_, err := model.CheckSession(request)
+		user, err := sess.User()
 		if err != nil {
-			http.Redirect(writer, request, "/login", 302)
-		} else {
-			web.GenerateHTML(writer, &pin, "layout", "private.navbar", "private.pin")
+			utils.Error_message(writer, request, "Cannot get user")
 		}
+		pin, err := user.GetPinByUUID(uuid)
+		if err != nil {
+			utils.Error_message(writer, request, "Cannot get pin")
+		}
+		web.GenerateHTML(writer, &pin, "layout", "private.navbar", "private.pin")
 	}
 }
 
@@ -82,10 +85,12 @@ func UpdatePin(writer http.ResponseWriter, request *http.Request) {
 	} else {
 		err = request.ParseForm()
 		if err != nil {
-			log.Error("Cannot parse form")
+			utils.Error_message(writer, request, "Cannot parse form")
+			return
 		}
 		uuid := request.PostFormValue("uuid")
-		pin, err := model.GetPinByUUID(uuid)
+		user, _ := sess.User()
+		pin, err := user.GetPinByUUID(uuid)
 		if err != nil {
 			utils.Error_message(writer, request, "Cannot read pin")
 			return
@@ -102,6 +107,27 @@ func UpdatePin(writer http.ResponseWriter, request *http.Request) {
 
 		if err := pin.UpdatePin(); err != nil {
 			log.Error("Cannot update pin - " + err.Error())
+		}
+		http.Redirect(writer, request, "/minepin", 302)
+	}
+}
+
+func DeletePin(writer http.ResponseWriter, request *http.Request) {
+	sess, err := model.CheckSession(request)
+	if err != nil {
+		http.Redirect(writer, request, "/login", 302)
+	} else {
+		val := request.URL.Query()
+		uuid := val.Get("pid")
+		user, _ := sess.User()
+		pin, err := user.GetPinByUUID(uuid)
+		if err != nil {
+			utils.Error_message(writer, request, "Cannot read pin")
+			return
+		}
+
+		if err := pin.Delete(); err != nil {
+			log.Error("Cannot delete pin - " + err.Error())
 		}
 		http.Redirect(writer, request, "/minepin", 302)
 	}

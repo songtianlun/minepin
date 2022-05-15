@@ -39,6 +39,7 @@ func initHandle() {
 	web.RegisterHandle("/pin/create", handle.CreatePin)
 	web.RegisterHandle("/pin/edit", handle.EditPin)
 	web.RegisterHandle("/pin/update", handle.UpdatePin)
+	web.RegisterHandle("/pin/delete", handle.DeletePin)
 }
 
 func initCfg() {

@@ -28,7 +28,17 @@
       <div id="l-map" style="margin: 20px auto;height: 300px;"></div>
     </div>
   </div>
-  <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
+  <div class="row">
+    <div class="col-md-6">
+      <a class="btn btn-lg btn-danger btn-block"
+              type="button"
+              style="margin: 10px auto;"
+              href="/pin/delete?pid={{.UUID }}">删除</a>
+    </div>
+    <div class="col-md-6">
+      <button class="btn btn-lg btn-primary btn-block" type="submit" style="margin: 10px auto;">保存</button>
+    </div>
+  </div>
 </form>
 
 <script type="text/javascript">
@@ -38,9 +48,11 @@
   }
 
   var map = new BMapGL.Map("l-map");
-  map.centerAndZoom(new BMapGL.Point(116.404, 39.928), 15);
+  var pinPoint = new BMapGL.Point({{ .Lng }}, {{ .Lat }})
+  map.centerAndZoom(pinPoint, 15);
   // map.centerAndZoom("北京",12);                   // 初始化地图,设置城市和地图级别。
   map.enableScrollWheelZoom(true);
+  map.addOverlay(new BMapGL.Marker(pinPoint));
   // 增加点选事件，实现点选位置
   map.addEventListener('click', function (e) {
     map.clearOverlays()

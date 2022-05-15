@@ -39,6 +39,12 @@ func (u *User) PinList() (pins []Pin, err error) {
 	return
 }
 
+func (u *User) GetPinByUUID(uid string) (pin Pin, err error) {
+	err = db.DB.Model(&u).
+		Where("uuid = ?", uid).Association("Pins").Find(&pin)
+	return
+}
+
 func (p *Pin) User() (user User) {
 	db.DB.First(&user, p.UserId)
 	return
@@ -55,7 +61,11 @@ func (p *Pin) UpdatePin() (err error) {
 	return
 }
 
-func GetPinByUUID(pid string) (p Pin, err error) {
-	err = db.DB.Where("uuid = ?", pid).First(&p).Error
-	return
+func (p *Pin) Delete() (err error) {
+	return db.DB.Delete(&p).Error
 }
+
+//func GetPinByUUID(pid string) (p Pin, err error) {
+//	err = db.DB.Where("uuid = ?", pid).First(&p).Error
+//	return
+//}
