@@ -1,6 +1,7 @@
 package handle
 
 import (
+	"minepin/com/utils"
 	"minepin/com/web"
 	"minepin/model"
 	"net/http"
@@ -20,10 +21,14 @@ func Err(writer http.ResponseWriter, request *http.Request) {
 }
 
 func Index(writer http.ResponseWriter, request *http.Request) {
-	_, err := model.CheckSession(request)
+	sess, err := model.CheckSession(request)
 	if err != nil {
 		web.GenerateHTML(writer, nil, "layout", "public.navbar", "index")
 	} else {
-		web.GenerateHTML(writer, nil, "layout", "private.navbar", "index")
+		user, err := sess.User()
+		if err != nil {
+			utils.Error_message(writer, request, "failed to get user.")
+		}
+		web.GenerateHTML(writer, user, "layout", "private.navbar", "index")
 	}
 }

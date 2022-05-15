@@ -1,20 +1,6 @@
 {{ define "content" }}
-<p class="lead">
-  <a href="/thread/new">Start a thread</a> or join one below!
+<p class="lead justify-content-center text-center" style="height: 300px">
+  简单高效的地理位置收藏夹，快速收藏、分类整理。</br>
 </p>
-
-{{ range . }}
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <span class="lead"> <i class="fa fa-comment-o"></i> {{ .Topic }}</span>
-    </div>
-    <div class="panel-body">
-      Started by {{ .User.Name }} - {{ .CreatedAtDate }} - {{ .NumReplies }} posts.
-      <div class="pull-right">
-        <a href="/thread/read?id={{.UUID }}">Read more</a>
-      </div>
-    </div>
-  </div>
-{{ end }}
 
 {{ end }}

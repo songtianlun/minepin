@@ -2,8 +2,6 @@ module minepin
 
 go 1.17
 
-require github.com/lib/pq v1.10.5
-
 require (
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/google/uuid v1.3.0 // indirect
