@@ -6,6 +6,7 @@ import (
 	"minepin/com/cli"
 	"minepin/com/db"
 	"minepin/com/log"
+	"minepin/com/v"
 	"minepin/com/web"
 	"minepin/handle"
 	"minepin/model"
@@ -87,8 +88,8 @@ func initDB() {
 }
 
 func runCLI() (isCli bool) {
-	cli.RegisterCLI("hello", "H", "Hello world", func() {
-		fmt.Println("hello world!")
+	cli.RegisterCLI("version", "V", "show version info.", func() {
+		fmt.Println(v.GetVersionStr())
 	})
 	return cli.CheckCLI()
 }
