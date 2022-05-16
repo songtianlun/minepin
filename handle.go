@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"minepin/com/cfg"
+	"minepin/com/cli"
 	"minepin/com/db"
 	"minepin/com/log"
 	"minepin/com/web"
@@ -83,4 +84,11 @@ func initDB() {
 	db.MigrateModel(model.User{})
 	db.MigrateModel(model.Session{})
 	db.MigrateModel(model.Pin{})
+}
+
+func runCLI() (isCli bool) {
+	cli.RegisterCLI("hello", "H", "Hello world", func() {
+		fmt.Println("hello world!")
+	})
+	return cli.CheckCLI()
 }
