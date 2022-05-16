@@ -22,6 +22,7 @@ func RegisterCLI(k string, abbr string, desc string, handle HandleCLI) {
 	if ok {
 		panic(fmt.Sprintf("%s is already registered", k))
 	}
+	//var value bool
 	MapCLI[k] = &CLI{
 		abbr:   abbr,
 		dft:    false,
@@ -29,10 +30,12 @@ func RegisterCLI(k string, abbr string, desc string, handle HandleCLI) {
 		value:  pflag.BoolP(k, abbr, false, desc),
 		handle: handle,
 	}
+	//flag.BoolVar(&value, k, false, desc)
 }
 
 func CheckCLI() (isCli bool) {
 	pflag.Parse()
+	//flag.Parse()
 	for _, v := range MapCLI {
 		if *v.value {
 			v.handle()
