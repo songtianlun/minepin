@@ -18,7 +18,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
     apk update && \
     apk upgrade && \
     apk add --no-cache bash git openssh musl-dev gcc make && \
-    CGO_ENABLED=1 go install github.com/mattn/go-sqlite3 && \
+    CGO_ENABLED=0 go install github.com/mattn/go-sqlite3 && \
     make && \
     mv minepin app
 
