@@ -27,7 +27,7 @@ func Index(writer http.ResponseWriter, request *http.Request) {
 	} else {
 		user, err := sess.User()
 		if err != nil {
-			utils.Error_message(writer, request, "failed to get user.")
+			utils.ErrorMessage(writer, request, "failed to get user.")
 		}
 		web.GenerateHTML(writer, user, "layout", "private.navbar", "index")
 	}

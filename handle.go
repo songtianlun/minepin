@@ -13,6 +13,7 @@ import (
 )
 
 func initHandle() {
+
 	// static file
 	web.RegisterFile("/static/", cfg.GetString("Static"), true)
 
@@ -24,18 +25,19 @@ func initHandle() {
 
 	// defined in route_auth.go
 	web.RegisterHandle("/login", handle.Login)
-	web.RegisterHandle("/logout", handle.Logout)
 	web.RegisterHandle("/signup", handle.Signup)
 	web.RegisterHandle("/signup_account", handle.SignupAccount)
 	web.RegisterHandle("/authenticate", handle.Authenticate)
 
+	web.RegisterHandle("/logout", handle.Logout)
+
 	// defined minepin
-	web.RegisterHandle("/minepin", handle.MinePinIndex)
-	web.RegisterHandle("/pin/new", handle.NewPin)
-	web.RegisterHandle("/pin/create", handle.CreatePin)
-	web.RegisterHandle("/pin/edit", handle.EditPin)
-	web.RegisterHandle("/pin/update", handle.UpdatePin)
-	web.RegisterHandle("/pin/delete", handle.DeletePin)
+	web.RegisterHandle("/minepin", handle.MinePinIndex, handle.Auth)
+	web.RegisterHandle("/pin/new", handle.NewPin, handle.Auth)
+	web.RegisterHandle("/pin/create", handle.CreatePin, handle.Auth)
+	web.RegisterHandle("/pin/edit", handle.EditPin, handle.Auth)
+	web.RegisterHandle("/pin/update", handle.UpdatePin, handle.Auth)
+	web.RegisterHandle("/pin/delete", handle.DeletePin, handle.Auth)
 }
 
 func initCfg() {

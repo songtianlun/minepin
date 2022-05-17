@@ -61,7 +61,7 @@ func UserByEmail(email string) (u User, err error) {
 
 func Check(sid string) (s Session, err error) {
 	if sid == "" {
-		err = fmt.Errorf("get a null session id.")
+		err = fmt.Errorf("get a null session id")
 		log.Error(err.Error())
 		return
 	}
@@ -78,6 +78,27 @@ func CheckSession(request *http.Request) (session Session, err error) {
 	if err != nil {
 		return Session{}, err
 	}
+	return
+}
+
+func GetUser(r *http.Request) (u User, err error) {
+	sess, err := CheckSession(r)
+	if err != nil {
+		return User{}, err
+	}
+	u, err = sess.User()
+	if err != nil {
+		return User{}, err
+	}
+	return
+}
+
+func GetPinList(r *http.Request) (pins []Pin, err error) {
+	user, err := GetUser(r)
+	if err != nil {
+		return pins, err
+	}
+	pins, err = user.PinList()
 	return
 }
 

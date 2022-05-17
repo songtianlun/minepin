@@ -32,7 +32,7 @@ func (u *User) CreatePin(pb PinBind) (pin Pin, err error) {
 }
 
 func (u *User) PinList() (pins []Pin, err error) {
-	err = db.DB.Model(&u).Association("Pins").Find(&pins)
+	err = db.DB.Model(&u).Order("createdAt desc").Association("Pins").Find(&pins)
 	if err != nil {
 		return nil, err
 	}

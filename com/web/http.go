@@ -9,7 +9,9 @@ import (
 	"time"
 )
 
-type Handle func(w http.ResponseWriter, r *http.Request)
+type Chain struct {
+	middlewares []func(handler http.HandlerFunc) http.HandlerFunc
+}
 
 var mux *http.ServeMux
 
@@ -19,8 +21,10 @@ func init() {
 	mux = http.NewServeMux()
 }
 
-func RegisterHandle(path string, handle Handle) {
-	mux.HandleFunc(path, handle)
+func RegisterHandle(path string, handle http.HandlerFunc, m ...func(handlerFunc http.HandlerFunc) http.HandlerFunc) {
+	c := Chain{}
+	c.middlewares = append(c.middlewares, m...)
+	mux.HandleFunc(path, c.Then(handle))
 }
 
 func RegisterFile(path string, file string, strip bool) {
@@ -30,6 +34,14 @@ func RegisterFile(path string, file string, strip bool) {
 	} else {
 		mux.Handle(path, files)
 	}
+}
+
+func (c Chain) Then(next http.HandlerFunc) http.HandlerFunc {
+	for i := range c.middlewares {
+		prev := c.middlewares[len(c.middlewares)-1-i]
+		next = prev(next)
+	}
+	return next
 }
 
 func Run(address string) {

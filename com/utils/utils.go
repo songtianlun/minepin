@@ -24,8 +24,8 @@ func P(a ...interface{}) {
 	fmt.Println(a)
 }
 
-// Convenience function to redirect to the error message page
-func Error_message(writer http.ResponseWriter, request *http.Request, msg string) {
+// ErrorMessage Convenience function to redirect to the error message page
+func ErrorMessage(writer http.ResponseWriter, request *http.Request, msg string) {
 	url := []string{"/err?msg=", msg}
 	http.Redirect(writer, request, strings.Join(url, ""), 302)
 }
