@@ -11,7 +11,7 @@ gitTreeState = $(shell if git status|grep -q -E 'clean|干净';then echo clean; 
 ldflags=" '-static' -w -X ${versionDir}.gitTag=${gitTag} -X ${versionDir}.buildDate=${buildDate} -X ${versionDir}.gitCommit=${gitCommit} -X ${versionDir}.gitTreeState=${gitTreeState}"
 
 all: gotool
-	@go build -v -ldflags ${ldflags} .
+	@go build -a -v -ldflags ${ldflags} .
 clean:
 	rm -f minegin
 	find . -name "[._]*.s[a-w][a-z]" | xargs -i rm -f {}
