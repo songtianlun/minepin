@@ -18,7 +18,7 @@ func MinePinIndex(writer http.ResponseWriter, request *http.Request) {
 }
 
 func NewPin(writer http.ResponseWriter, request *http.Request) {
-	web.GenerateHTML(writer, nil, "layout", "private.navbar", "new.pin")
+	web.GenerateHTML(writer, &model.Pin{}, "layout", "private.navbar", "new.pin")
 }
 
 func CreatePin(writer http.ResponseWriter, request *http.Request) {

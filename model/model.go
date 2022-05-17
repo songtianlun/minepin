@@ -3,6 +3,7 @@ package model
 import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"minepin/com/cfg"
 	"time"
 )
 
@@ -21,4 +22,8 @@ func (bm *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
 
 func (bm *BaseModel) CreatedAtDate() string {
 	return bm.CreatedAt.Format("Jan 2, 2006 at 3:04pm")
+}
+
+func (bm *BaseModel) BaiduAK() string {
+	return cfg.GetString("BaiduAK")
 }
