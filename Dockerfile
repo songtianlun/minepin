@@ -2,10 +2,9 @@ FROM golang:1.18.0-alpine3.14 AS builder
 
 # 设置必要的环境变量
 ENV GO111MODULE=on \
-    CGO_ENABLED=0 \
+    CGO_ENABLED=1 \
     GOOS=linux \
     GOARCH=amd64
-#   CGO_ENABLED - 纯静态编译
 
 # 移动到工作目录：/build
 WORKDIR /build
@@ -18,7 +17,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
     apk update && \
     apk upgrade && \
     apk add --no-cache bash git openssh musl-dev gcc make && \
-    CGO_ENABLED=0 go install github.com/mattn/go-sqlite3 && \
+    go install github.com/mattn/go-sqlite3 && \
     make && \
     mv minepin app
 
