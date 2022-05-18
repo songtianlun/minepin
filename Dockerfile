@@ -24,7 +24,8 @@ FROM scratch
 
 # 从 builder  中拷贝 /dist/app 到当前目录
 COPY --from=builder /build/app /
-COPY --from=builder /build/templates /
+COPY --from=builder /build/templates /templates
+COPY --from=builder /build/public /public
 
 # 需要运行的命令
 ENTRYPOINT ["/app"]

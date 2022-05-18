@@ -31,5 +31,3 @@ help:
 	@echo "make ca - generate ca files"
 
 .PHONY: clean gotool ca help air
-
-
