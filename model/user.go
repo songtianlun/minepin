@@ -17,6 +17,7 @@ type User struct {
 	Password string            `json:"password" gorm:"column:password;not null" validate:"min=5,max=128"`
 	Sessions []Session
 	Pins     []Pin
+	Groups   []PinGroup
 }
 
 type Session struct {
@@ -99,6 +100,15 @@ func GetPinList(r *http.Request) (pins []Pin, err error) {
 		return pins, err
 	}
 	pins, err = user.PinList()
+	return
+}
+
+func GetGroupList(r *http.Request) (groups []PinGroup, err error) {
+	user, err := GetUser(r)
+	if err != nil {
+		return nil, err
+	}
+	groups, err = user.GroupList()
 	return
 }
 

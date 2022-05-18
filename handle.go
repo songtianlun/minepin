@@ -38,6 +38,12 @@ func initHandle() {
 	web.RegisterHandle("/pin/edit", handle.EditPin, handle.Auth)
 	web.RegisterHandle("/pin/update", handle.UpdatePin, handle.Auth)
 	web.RegisterHandle("/pin/delete", handle.DeletePin, handle.Auth)
+
+	// defined group
+	web.RegisterHandle("/group", handle.PinGroupIndex, handle.Auth)
+	web.RegisterHandle("/group/new", handle.NewGroup, handle.Auth)
+	web.RegisterHandle("/group/create", handle.CreateGroup, handle.Auth)
+	web.RegisterHandle("/group/edit", handle.EditGroup, handle.Auth)
 }
 
 func initCfg() {
@@ -88,6 +94,7 @@ func initDB() {
 	db.MigrateModel(model.User{})
 	db.MigrateModel(model.Session{})
 	db.MigrateModel(model.Pin{})
+	db.MigrateModel(model.PinGroup{})
 }
 
 func runCLI() (isCli bool) {

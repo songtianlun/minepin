@@ -1,0 +1,23 @@
+{{ define "content" }}
+<p class="lead">
+    <form action="/group/new">
+    <button type="submit" class="btn btn-primary btn-lg btn-block">➕ Group</button>
+    </form>
+</p>
+
+{{ range . }}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="lead"> <i class="fa fa-comment-o"></i> {{ .Name }}</span>
+    </div>
+    <div class="panel-body">
+        {{ .Note }} - {{ .CreatedAtDate }}.
+        <div class="pull-right">
+            <a href="/group/edit?pid={{.UUID }}">Edit</a>&nbsp&nbsp&nbsp&nbsp
+            <a href="/group/show?pid={{.UUID }}">Show</a>
+        </div>
+    </div>
+</div>
+{{ end }}
+
+{{ end }}
