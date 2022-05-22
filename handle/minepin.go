@@ -18,26 +18,36 @@ func MinePinIndex(writer http.ResponseWriter, request *http.Request) {
 }
 
 func NewPin(writer http.ResponseWriter, request *http.Request) {
-	web.GenerateHTML(writer, &model.Pin{}, "layout", "private.navbar", "new.pin")
+	user, _ := model.GetUser(request)
+	web.GenerateHTML(writer, &model.Pin{UserId: user.Id}, "layout", "private.navbar", "new.pin")
 }
 
 func CreatePin(writer http.ResponseWriter, request *http.Request) {
 	err := request.ParseForm()
 	if err != nil {
-		log.Error("Cannot parse form")
+		utils.ErrorMessage(writer, request, "Cannot parse form")
+		return
 	}
 	user, err := model.GetUser(request)
 	if err != nil {
-		log.Error("Cannot get user from session")
+		utils.ErrorMessage(writer, request, "Cannot get user from session")
+		return
+	}
+	group, err := user.GetGroupByID(utils.StrToInt64(request.PostFormValue("group")))
+	if err != nil {
+		utils.ErrorMessage(writer, request, "Cannot get group detail")
+		return
 	}
 	pin := model.PinBind{
 		Location: request.PostFormValue("location"),
 		Lat:      request.PostFormValue("latitude"),
 		Lng:      request.PostFormValue("longitude"),
 		Note:     request.PostFormValue("note"),
+		Group:    group,
 	}
 	if _, err := user.CreatePin(pin); err != nil {
-		log.Error("Cannot create thread")
+		utils.ErrorMessage(writer, request, "Cannot create pin")
+		return
 	}
 	http.Redirect(writer, request, "/", 302)
 }
@@ -64,16 +74,26 @@ func UpdatePin(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 	uuid := request.PostFormValue("uuid")
-	user, _ := model.GetUser(request)
+	user, err := model.GetUser(request)
+	if err != nil {
+		utils.ErrorMessage(writer, request, "Cannot get user")
+		return
+	}
 	pin, err := user.GetPinByUUID(uuid)
 	if err != nil {
 		utils.ErrorMessage(writer, request, "Cannot read pin")
+		return
+	}
+	group, err := user.GetGroupByID(utils.StrToInt64(request.PostFormValue("group")))
+	if err != nil {
+		utils.ErrorMessage(writer, request, "Cannot get group detail")
 		return
 	}
 	pin.Location = request.PostFormValue("location")
 	pin.Lat = request.PostFormValue("latitude")
 	pin.Lng = request.PostFormValue("longitude")
 	pin.Note = request.PostFormValue("note")
+	pin.GroupId = group.Id
 
 	if err := pin.UpdatePin(); err != nil {
 		log.Error("Cannot update pin - " + err.Error())

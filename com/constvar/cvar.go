@@ -13,4 +13,6 @@ const (
 	UserRegistered UserType = 1
 	UserVIP        UserType = 2
 	UserAdmin      UserType = 10
+
+	DefaultGroupName = "Default"
 )

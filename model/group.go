@@ -1,12 +1,16 @@
 package model
 
-import "minepin/com/db"
+import (
+	"fmt"
+	"minepin/com/constvar"
+	"minepin/com/db"
+)
 
 type PinGroup struct {
 	BaseModel
 	Name   string `json:"name"`
-	UserId uint64 `json:"user_id"`
 	Note   string `json:"note"`
+	UserId uint64 `json:"user_id"`
 }
 
 type GroupBind struct {
@@ -28,9 +32,6 @@ func (u *User) CreateGroup(gb GroupBind) (g PinGroup, err error) {
 
 func (u *User) GroupList() (groups []PinGroup, err error) {
 	err = db.DB.Model(&u).Order("createdAt desc").Association("Groups").Find(&groups)
-	if err != nil {
-		return nil, err
-	}
 	return
 }
 
@@ -40,12 +41,26 @@ func (u *User) GetGroupByUUID(uid string) (group PinGroup, err error) {
 	return
 }
 
+func (u *User) GetGroupByID(id uint64) (group PinGroup, err error) {
+	err = db.DB.Model(&u).Association("Groups").Find(&group, id)
+	return
+}
+
 func (g *PinGroup) User() (user User) {
 	db.DB.First(&user, g.UserId)
 	return
 }
 
 func (g *PinGroup) UpdateGroup() (err error) {
+	oldGroup := PinGroup{}
+	err = db.DB.Model(&PinGroup{}).Where("uuid = ?", g.UUID).First(&oldGroup).Error
+	if err != nil {
+		return
+	}
+	if oldGroup.Name == constvar.DefaultGroupName {
+		err = fmt.Errorf("default group can not be edited")
+		return
+	}
 	// 保证仅更新非零字段
 	err = db.DB.Where("uuid = ?", g.UUID).Updates(PinGroup{
 		Name: g.Name,
@@ -55,5 +70,9 @@ func (g *PinGroup) UpdateGroup() (err error) {
 }
 
 func (g *PinGroup) Delete() (err error) {
+	if g.Name == constvar.DefaultGroupName {
+		err = fmt.Errorf("default group can not be deleted")
+		return
+	}
 	return db.DB.Delete(&g).Error
 }

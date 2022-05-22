@@ -11,13 +11,14 @@
       <label for="note">备注:</label>
       <input type="text" class="form-control" id="note" name="note" value="{{ .Note }}" />
     </div>
+    <input type="hidden" name="uuid" value="{{ .UUID }}">
   </div>
   <div class="row">
     <div class="col-md-6">
       <a class="btn btn-lg btn-danger btn-block"
               type="button"
               style="margin: 10px auto;"
-              href="/pin/delete?pid={{.UUID }}">删除</a>
+              href="/group/delete?uid={{.UUID }}">删除</a>
     </div>
     <div class="col-md-6">
       <button class="btn btn-lg btn-primary btn-block" type="submit" style="margin: 10px auto;">保存</button>

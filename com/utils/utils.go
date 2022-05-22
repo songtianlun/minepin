@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -18,6 +19,14 @@ func PathExists(path string) (bool, error) {
 		return false, nil
 	}
 	return false, err
+}
+
+func StrToInt64(s string) (i uint64) {
+	i, err := strconv.ParseUint(s, 10, 64)
+	if err != nil {
+		i = 0
+	}
+	return
 }
 
 func P(a ...interface{}) {

@@ -9,6 +9,8 @@ type Pin struct {
 	Lng      string
 	Note     string
 	UserId   uint64
+	GroupId  uint64
+	Group    PinGroup
 }
 
 type PinBind struct {
@@ -16,6 +18,7 @@ type PinBind struct {
 	Lat      string
 	Lng      string
 	Note     string
+	Group    PinGroup
 }
 
 func (u *User) CreatePin(pb PinBind) (pin Pin, err error) {
@@ -50,6 +53,17 @@ func (p *Pin) User() (user User) {
 	return
 }
 
+func (p *Pin) Groups() (groups []PinGroup) {
+	user := p.User()
+	groups, _ = user.GroupList()
+	return
+}
+
+//func (p *Pin) GetGroup() (group PinGroup) {
+//	groups, _ = db.DB.Model(&p).Association("Group").Find(&group)
+//	return
+//}
+
 func (p *Pin) UpdatePin() (err error) {
 	// 保证仅更新非零字段
 	err = db.DB.Where("uuid = ?", p.UUID).Updates(Pin{
@@ -57,6 +71,8 @@ func (p *Pin) UpdatePin() (err error) {
 		Lat:      p.Lat,
 		Lng:      p.Lng,
 		Note:     p.Note,
+		GroupId:  p.Group.Id,
+		//Group:    p.Group,
 	}).Error
 	return
 }

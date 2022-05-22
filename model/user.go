@@ -28,6 +28,7 @@ type Session struct {
 
 func (u *User) Create() error {
 	u.Password = utils.Encrypt(u.Password)
+	u.CreateDefaultGroup()
 	return db.DB.Create(&u).Error
 }
 
@@ -42,6 +43,20 @@ func (u *User) CreateSession() (session Session, err error) {
 
 func (u *User) Session() (session Session, err error) {
 	err = db.DB.First(&session, u.Id).Error
+	return
+}
+
+func (u *User) CreateDefaultGroup() {
+	gs, _ := u.GroupList()
+	for _, g := range gs {
+		if g.Name == "default" {
+			return
+		}
+	}
+	gs = append(gs, PinGroup{
+		Name: "Default",
+	})
+	u.Groups = gs
 	return
 }
 
