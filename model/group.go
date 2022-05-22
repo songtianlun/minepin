@@ -46,6 +46,12 @@ func (u *User) GetGroupByID(id uint64) (group PinGroup, err error) {
 	return
 }
 
+func (u *User) ShowPinsByGroupID(gid uint64) (pins []Pin, err error) {
+	err = db.DB.Model(&u).Where("group_id = ?", gid).
+		Association("Pins").Find(&pins)
+	return
+}
+
 func (g *PinGroup) User() (user User) {
 	db.DB.First(&user, g.UserId)
 	return

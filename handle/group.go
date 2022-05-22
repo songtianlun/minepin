@@ -21,6 +21,32 @@ func NewGroup(writer http.ResponseWriter, request *http.Request) {
 	web.GenerateHTML(writer, &model.Pin{}, "layout", "private.navbar", "new.group")
 }
 
+func ShowGroup(writer http.ResponseWriter, request *http.Request) {
+	val := request.URL.Query()
+	id := utils.StrToInt64(val.Get("id"))
+
+	user, err := model.GetUser(request)
+	if err != nil {
+		utils.ErrorMessage(writer, request, "Cannot get user")
+		return
+	}
+	group, err := user.GetGroupByID(id)
+	if err != nil {
+		utils.ErrorMessage(writer, request, "Cannot get group")
+		return
+	}
+	pins, err := user.ShowPinsByGroupID(id)
+	if err != nil {
+		utils.ErrorMessage(writer, request, "Cannot get pins by group")
+		return
+	}
+	web.GenerateHTML(writer, model.Pins{
+		Group:   group,
+		Pins:    pins,
+		BaiduAK: user.BaiduAK(),
+	}, "layout", "private.navbar", "index.group.pin")
+}
+
 func CreateGroup(writer http.ResponseWriter, request *http.Request) {
 	err := request.ParseForm()
 	if err != nil {

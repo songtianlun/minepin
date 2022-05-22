@@ -46,6 +46,7 @@ func initHandle() {
 	web.RegisterHandle("/group/edit", handle.EditGroup, handle.Auth)
 	web.RegisterHandle("/group/update", handle.UpdateGroup, handle.Auth)
 	web.RegisterHandle("/group/delete", handle.DeleteGroup, handle.Auth)
+	web.RegisterHandle("/group/show", handle.ShowGroup, handle.Auth)
 }
 
 func initCfg() {

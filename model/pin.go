@@ -21,6 +21,12 @@ type PinBind struct {
 	Group    PinGroup
 }
 
+type Pins struct {
+	Group   PinGroup
+	Pins    []Pin
+	BaiduAK string
+}
+
 func (u *User) CreatePin(pb PinBind) (pin Pin, err error) {
 	pin = Pin{
 		Location: pb.Location,
