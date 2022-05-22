@@ -92,7 +92,13 @@ func initLog() {
 }
 
 func initDB() {
-	db.InitDB(&db.CfgDb{Typ: "sqlite", Addr: cfg.GetString("db.addr")})
+	db.InitDB(&db.CfgDb{
+		Typ:      cfg.GetString("db.type"),
+		Addr:     cfg.GetString("db.addr"),
+		Name:     cfg.GetString("db.name"),
+		Username: cfg.GetString("db.username"),
+		Passwd:   cfg.GetString("db.password"),
+	})
 
 	db.MigrateModel(model.User{})
 	db.MigrateModel(model.Session{})
