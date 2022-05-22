@@ -13,3 +13,10 @@ log:
   compress: false             # 日志压缩
   stdout: true                # 显式指定日志输出到 stdout
   only_stdout: true           # 日志仅输出到 stdout
+
+db:
+  type: mysql                        # * DB_TYPE mysql, sqlite
+  addr: xxxx.xxxx.xxxx.xxxx:3306     # * DB_ADDR example for sqlite
+  name: MYSQL_NAME                   # DB_NAME only mysql
+  username: USERNAME                 # DB_USERNAME only mysql
+  password: PASSWORD                 # DB_PASSWORD only mysql
