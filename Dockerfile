@@ -5,7 +5,6 @@ ENV GO111MODULE=on \
     CGO_ENABLED=1 \
     GOOS=linux \
     GOARCH=amd64 \
-    GOPROXY=https://mirrors.cloud.tencent.com/go/
 
 # 移动到工作目录：/build
 WORKDIR /build
