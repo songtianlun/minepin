@@ -4,7 +4,7 @@ FROM golang:1.17.10-alpine3.15 AS builder
 ENV GO111MODULE=on \
     CGO_ENABLED=1 \
     GOOS=linux \
-    GOARCH=amd64 \
+    GOARCH=amd64
 
 # 移动到工作目录：/build
 WORKDIR /build
