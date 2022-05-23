@@ -1,5 +1,6 @@
 SHELL := /bin/bash
 BASEDIR = $(shell pwd)
+GOPROXY=https://mirrors.cloud.tencent.com/go/
 
 # build with version infos
 versionDir = "minepin/com/v"
