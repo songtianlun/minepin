@@ -34,6 +34,7 @@ func (u *User) CreatePin(pb PinBind) (pin Pin, err error) {
 		Lng:      pb.Lng,
 		Note:     pb.Note,
 		UserId:   u.Id,
+		GroupId:  pb.Group.Id,
 	}
 	//err = db.DB.Create(&pin).Error
 	err = db.DB.Model(&u).Association("Pins").Append(&pin)
