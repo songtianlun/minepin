@@ -11,21 +11,28 @@
 
   var map = new BMapGL.Map("l-map");
 
-
   // map.centerAndZoom("北京",12);                   // 初始化地图,设置城市和地图级别。
   map.enableScrollWheelZoom(true);
   {{ range .Pins }}
-  map.addOverlay(new BMapGL.Marker(new BMapGL.Point({{ .Lng }}, {{ .Lat }})));
-  map.centerAndZoom(new BMapGL.Point({{ .Lng }}, {{ .Lat }}), 15);
+  registerMark({{.Lng}}, {{.Lat}}, {{ .Location }}, {{.Note}}, map)
   {{ end }}
-  // map.addOverlay(new BMapGL.Marker(pinPoint));
-  // 增加点选事件，实现点选位置
-  map.addEventListener('click', function (e) {
-    map.clearOverlays()
-    map.addOverlay(new BMapGL.Marker(new BMapGL.Point(e.latlng.lng, e.latlng.lat)));
-    document.getElementById("longitude").value=e.latlng.lng
-    document.getElementById("latitude").value=e.latlng.lat
-  });
+
+  function registerMark(lng,lat,name,note,map) {
+      var point = new BMapGL.Point(lng, lat)
+      var marker = new BMapGL.Marker(point)
+
+      map.addOverlay(marker);
+      map.centerAndZoom(point, 15);
+
+      // 点标记添加点击事件
+      marker.addEventListener('click', function () {
+          map.openInfoWindow(new BMapGL.InfoWindow(note, {
+              width: 200,
+              height: 100,
+              title: name
+          }), point); // 开启信息窗口
+      });
+  }
 </script>
 
 {{ end }}
