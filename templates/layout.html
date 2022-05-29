@@ -11,6 +11,25 @@
     <link href="/static/css/font-awesome.min.css" rel="stylesheet">
     <script async defer data-website-id="a2b65203-2f33-45b4-941b-32d35596f5cd" src="https://umami.frytea.com/umami.js"></script>
 
+    <link rel="stylesheet" href="/static/leaflet/leaflet.css"/>
+    <script src="/static/leaflet/leaflet.js"></script>
+
+    <script src="/static/js/coordtransform.js"></script>
+
+    <script src="/static/js/proj4-2.4.3.js"></script>
+    <script src="/static/leaflet/plugins/proj4leaflet.min.js"></script>
+
+    <script src="/static/leaflet/plugins/leaflet.ChineseTmsProviders.js"></script>
+    <script src="/static/leaflet/plugins/leaflet.mapCorrection.min.js"></script>
+
+<!--    // 通用处理方法-->
+    <script type="text/javascript" src="/static/js/handle.js"></script>
+
+<!--    // leaflet 聚合图依赖-->
+    <link rel="stylesheet" href="/static/leaflet/plugins/leaflet.markercluster@1.5.3/MarkerCluster.css" />
+    <link rel="stylesheet" href="/static/leaflet/plugins/leaflet.markercluster@1.5.3/MarkerCluster.Default.css" />
+    <script src="/static/leaflet/plugins/leaflet.markercluster@1.5.3/leaflet.markercluster-src.js"></script>
+
   </head>
   <body>
     {{ template "navbar" . }}

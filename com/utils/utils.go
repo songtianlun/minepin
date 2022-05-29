@@ -29,6 +29,18 @@ func StrToInt64(s string) (i uint64) {
 	return
 }
 
+func StrToFloat64(s string) (i float64) {
+	i, err := strconv.ParseFloat(s, 64)
+	if err != nil {
+		i = 0
+	}
+	return
+}
+
+func Float64ToStr(f float64) string {
+	return strconv.FormatFloat(f, 'f', -1, 64)
+}
+
 func P(a ...interface{}) {
 	fmt.Println(a)
 }

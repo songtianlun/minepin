@@ -1,12 +1,19 @@
 package model
 
-import "minepin/com/db"
+import (
+	coordTransform "github.com/qichengzx/coordtransform"
+	"minepin/com/constvar"
+	"minepin/com/db"
+	"minepin/com/log"
+	"minepin/com/utils"
+)
 
 type Pin struct {
 	BaseModel
 	Location string
 	Lat      string
 	Lng      string
+	CRS      string `gorm:"default:'BD09'"`
 	Note     string
 	UserId   uint64
 	GroupId  uint64
@@ -18,13 +25,15 @@ type PinBind struct {
 	Lat      string
 	Lng      string
 	Note     string
+	CRS      string
 	Group    PinGroup
 }
 
 type Pins struct {
-	Group   PinGroup
-	Pins    []Pin
-	BaiduAK string
+	Group       PinGroup
+	Pins        []Pin
+	BaiduAK     string
+	TianDiTuKey string
 }
 
 func (u *User) CreatePin(pb PinBind) (pin Pin, err error) {
@@ -33,6 +42,7 @@ func (u *User) CreatePin(pb PinBind) (pin Pin, err error) {
 		Lat:      pb.Lat,
 		Lng:      pb.Lng,
 		Note:     pb.Note,
+		CRS:      pb.CRS,
 		UserId:   u.Id,
 		GroupId:  pb.Group.Id,
 	}
@@ -43,6 +53,7 @@ func (u *User) CreatePin(pb PinBind) (pin Pin, err error) {
 
 func (u *User) PinList() (pins []Pin, err error) {
 	err = db.DB.Model(&u).Order("createdAt desc").Association("Pins").Find(&pins)
+	TransformPins(&pins)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +64,25 @@ func (u *User) GetPinByUUID(uid string) (pin Pin, err error) {
 	err = db.DB.Model(&u).
 		Where("uuid = ?", uid).Association("Pins").Find(&pin)
 	return
+}
+
+func (u *User) TransfromWithBD09() {
+	var pins []Pin
+	err := db.DB.Model(&u).
+		Where("crs = ?", "BD09").Association("Pins").Find(&pins)
+	if err != nil {
+		return
+	}
+	if len(pins) != 0 {
+		for _, pin := range pins {
+			pin.TransformBD09()
+			err := pin.UpdatePin()
+			if err != nil {
+				log.ErrorF("Trans BD09 with pin [UUID=%v] failed - %v",
+					pin.UUID, err.Error())
+			}
+		}
+	}
 }
 
 func (p *Pin) User() (user User) {
@@ -79,6 +109,7 @@ func (p *Pin) UpdatePin() (err error) {
 		Lng:      p.Lng,
 		Note:     p.Note,
 		GroupId:  p.Group.Id,
+		CRS:      p.CRS,
 		//Group:    p.Group,
 	}).Error
 	return
@@ -86,6 +117,21 @@ func (p *Pin) UpdatePin() (err error) {
 
 func (p *Pin) Delete() (err error) {
 	return db.DB.Delete(&p).Error
+}
+
+func (p *Pin) TransformBD09() {
+	if p.CRS == constvar.CRSBd09 {
+		lng, lat := coordTransform.BD09toWGS84(utils.StrToFloat64(p.Lng), utils.StrToFloat64(p.Lat))
+		p.Lng = utils.Float64ToStr(lng)
+		p.Lat = utils.Float64ToStr(lat)
+		p.CRS = constvar.CRSWgs84
+	}
+}
+
+func TransformPins(pins *[]Pin) {
+	for k, _ := range *pins {
+		(*pins)[k].TransformBD09()
+	}
 }
 
 //func GetPinByUUID(pid string) (p Pin, err error) {

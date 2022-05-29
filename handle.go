@@ -58,6 +58,7 @@ func initCfg() {
 	cfg.RegisterCfg("Static", "public", "string")
 	cfg.RegisterCfg("SessionTimeoutHour", 6, "int64")
 	cfg.RegisterCfg("BaiduAK", "<YOUR_BAIDU_AK>", "string")
+	cfg.RegisterCfg("TianDiTuKey", "<YOUR_TianDiTU_KEY>", "string")
 	// log
 	cfg.RegisterCfg("log.level", "info", "string")
 	cfg.RegisterCfg("log.file_name", "log/minegin.log", "string")

@@ -50,6 +50,7 @@ func Authenticate(writer http.ResponseWriter, request *http.Request) {
 		log.Error("Cannot find user")
 	}
 	if user.Password == utils.Encrypt(request.PostFormValue("password")) {
+		user.CloseAllSession()
 		session, err := user.CreateSession()
 		if err != nil {
 			log.ErrorF("Cannot create session - %v", err.Error())
@@ -59,6 +60,7 @@ func Authenticate(writer http.ResponseWriter, request *http.Request) {
 			Value:    session.UUID,
 			HttpOnly: true,
 		}
+		user.TransfromWithBD09() // 登录时将账户下的百度坐标系转换为WGS84坐标
 		http.SetCookie(writer, &cookie)
 		http.Redirect(writer, request, "/", 302)
 	} else {

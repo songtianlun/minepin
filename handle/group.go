@@ -40,10 +40,12 @@ func ShowGroup(writer http.ResponseWriter, request *http.Request) {
 		utils.ErrorMessage(writer, request, "Cannot get pins by group")
 		return
 	}
+	model.TransformPins(&pins)
 	web.GenerateHTML(writer, model.Pins{
-		Group:   group,
-		Pins:    pins,
-		BaiduAK: user.BaiduAK(),
+		Group:       group,
+		Pins:        pins,
+		BaiduAK:     user.BaiduAK(),
+		TianDiTuKey: user.TianDiTuKey(),
 	}, "layout", "private.navbar", "index.group.pin")
 }
 

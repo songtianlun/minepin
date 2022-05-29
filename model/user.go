@@ -32,6 +32,23 @@ func (u *User) Create() error {
 	return db.DB.Create(&u).Error
 }
 
+func (u *User) CloseAllSession() {
+	var sessions []Session
+	err := db.DB.Model(&u).Association("Sessions").Find(&sessions)
+	if err != nil {
+		log.ErrorF("Error to close all session of user %s: %s", u.Name, err.Error())
+		return
+	}
+	if len(sessions) > 0 {
+		for _, session := range sessions {
+			err := session.Delete()
+			if err != nil {
+				log.ErrorF("Failed to close session %s of user %s: %s", session.Id, u.Name, err.Error())
+			}
+		}
+	}
+}
+
 func (u *User) CreateSession() (session Session, err error) {
 	session = Session{
 		Email:  u.Email,

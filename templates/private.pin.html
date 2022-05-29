@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div id="l-map" style="margin: 20px auto;height: 300px;"></div>
+      <div id="leaflet_map" style="margin: 20px auto;height: 400px;"></div>
     </div>
   </div>
   <div class="row">
@@ -51,24 +51,37 @@
 
 <script type="text/javascript" src="//api.map.baidu.com/api?type=webgl&v=2.0&ak={{ .BaiduAK }}"></script>
 <script type="text/javascript">
-  // 百度地图API功能
-  function G(id) {
-    return document.getElementById(id);
-  }
+  let leaflet_map = handle.initLeafletMap("leaflet_map", "{{ .TianDiTuKey }}");
+  let leaflet_marker = handle.addMarkerToLeaflet({{ .Lat }}, {{ .Lng }}, leaflet_map, true);
+  leaflet_marker.bindPopup('<h6>{{ .Location }}</h6><p>{{ .Note }}</p>');
 
-  var map = new BMapGL.Map("l-map");
-  var pinPoint = new BMapGL.Point({{ .Lng }}, {{ .Lat }})
-  map.centerAndZoom(pinPoint, 15);
-  // map.centerAndZoom("北京",12);                   // 初始化地图,设置城市和地图级别。
-  map.enableScrollWheelZoom(true);
-  map.addOverlay(new BMapGL.Marker(pinPoint));
-  // 增加点选事件，实现点选位置
-  map.addEventListener('click', function (e) {
-    map.clearOverlays()
-    map.addOverlay(new BMapGL.Marker(new BMapGL.Point(e.latlng.lng, e.latlng.lat)));
+  leaflet_map.on("click", function(e) {
+    // console.log(e.latlng);
+    handle.removeMarkerLayer(leaflet_marker, leaflet_map);
+    leaflet_marker = handle.addMarkerToLeaflet(e.latlng.lat, e.latlng.lng, leaflet_map, true);
     document.getElementById("longitude").value=e.latlng.lng
     document.getElementById("latitude").value=e.latlng.lat
   });
+
+
+  // 百度地图API功能
+  // function G(id) {
+  //   return document.getElementById(id);
+  // }
+
+  // var map = new BMapGL.Map("l-map");
+  // var pinPoint = new BMapGL.Point({{ .Lng }}, {{ .Lat }})
+  // map.centerAndZoom(pinPoint, 15);
+  // map.centerAndZoom("北京",12);                   // 初始化地图,设置城市和地图级别。
+  // map.enableScrollWheelZoom(true);
+  // map.addOverlay(new BMapGL.Marker(pinPoint));
+  // 增加点选事件，实现点选位置
+  // map.addEventListener('click', function (e) {
+  //   map.clearOverlays()
+  //   map.addOverlay(new BMapGL.Marker(new BMapGL.Point(e.latlng.lng, e.latlng.lat)));
+  //   document.getElementById("longitude").value=e.latlng.lng
+  //   document.getElementById("latitude").value=e.latlng.lat
+  // });
 </script>
 
 {{ end }}

@@ -43,6 +43,7 @@ func CreatePin(writer http.ResponseWriter, request *http.Request) {
 		Lat:      request.PostFormValue("latitude"),
 		Lng:      request.PostFormValue("longitude"),
 		Note:     request.PostFormValue("note"),
+		CRS:      request.PostFormValue("crs"),
 		Group:    group,
 	}
 	if _, err := user.CreatePin(pin); err != nil {

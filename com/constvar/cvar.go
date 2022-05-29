@@ -15,4 +15,8 @@ const (
 	UserAdmin      UserType = 10
 
 	DefaultGroupName = "Default"
+
+	CRSBd09  = "BD09"
+	CRSWgs84 = "WGS84"
+	CRSGcj02 = "GCJ02"
 )

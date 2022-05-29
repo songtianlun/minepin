@@ -27,3 +27,7 @@ func (bm *BaseModel) CreatedAtDate() string {
 func (bm *BaseModel) BaiduAK() string {
 	return cfg.GetString("BaiduAK")
 }
+
+func (bm *BaseModel) TianDiTuKey() string {
+	return cfg.GetString("TianDiTuKey")
+}
