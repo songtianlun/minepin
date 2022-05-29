@@ -102,7 +102,7 @@
             crs: crs,
             center: [39.928, 116.404],
             zoom: 13,
-            layers: [BaiduNormalMap],
+            layers: [GaoDeNormal],
             zoomControl: false
         });
 
