@@ -3,16 +3,6 @@
 <div id="leaflet_map" style="margin: 20px auto;height: 400px;"></div>
 
 <script type="text/javascript">
-  // 百度地图API功能
-  // function G(id) {
-  //   return document.getElementById(id);
-  // }
-
-  // var map = new BMapGL.Map("l-map");
-
-  // map.centerAndZoom("北京",12);                   // 初始化地图,设置城市和地图级别。
-  // map.enableScrollWheelZoom(true);
-
   let leaflet_map = handle.initLeafletMap("leaflet_map", "{{ .TianDiTuKey }}");
   let markers = L.markerClusterGroup();
 
@@ -21,22 +11,9 @@
   {{ end }}
 
   leaflet_map.addLayer(markers);
+  leaflet_map.flyToBounds(markers.getBounds())
 
   function registerMark(lng,lat,name,note,markers) {
-      // var point = new BMapGL.Point(lng, lat)
-      // var marker = new BMapGL.Marker(point)
-      //
-      // map.addOverlay(marker);
-      // map.centerAndZoom(point, 15);
-      //
-      // // 点标记添加点击事件
-      // marker.addEventListener('click', function () {
-      //     map.openInfoWindow(new BMapGL.InfoWindow(note, {
-      //         width: 200,
-      //         height: 100,
-      //         title: name
-      //     }), point); // 开启信息窗口
-      // });
       var marker = L.marker(new L.LatLng(lat, lng), { title: name });
       marker.bindPopup(name);
       markers.addLayer(marker);
