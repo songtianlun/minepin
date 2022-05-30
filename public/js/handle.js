@@ -105,7 +105,8 @@
             center: center,
             zoom: 13,
             layers: [GaoDeNormal],
-            zoomControl: false
+            zoomControl: false,
+            detectRetina: true
         });
 
         leaflet_map.attributionControl.addAttribution("MinePin");
