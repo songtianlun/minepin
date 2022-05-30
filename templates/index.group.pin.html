@@ -15,7 +15,7 @@
 
   function registerMark(lng,lat,name,note,markers) {
       var marker = L.marker(new L.LatLng(lat, lng), { title: name });
-      marker.bindPopup('<h6>name</h6><p>note</p>');
+      marker.bindPopup('<h6>'+name+'</h6><p>'+note+'</p>');
       markers.addLayer(marker);
   }
 </script>
