@@ -95,6 +95,7 @@ func UpdatePin(writer http.ResponseWriter, request *http.Request) {
 	pin.Lng = request.PostFormValue("longitude")
 	pin.Note = request.PostFormValue("note")
 	pin.GroupId = group.Id
+	pin.Group = group
 
 	if err := pin.UpdatePin(); err != nil {
 		log.Error("Cannot update pin - " + err.Error())
