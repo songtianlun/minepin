@@ -18,10 +18,11 @@
      * 初始化需要的leaflet
      * @param div_id
      * @param tianditu_key
+     * @param center
      * @returns {leaflet_map}
      */
 
-    var initLeafletMap = function initLeafletMap(div_id, tianditu_key) {
+    var initLeafletMap = function initLeafletMap(div_id, tianditu_key, center=[39.928, 116.404]) {
         let TianDiTuNormalM = L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {
                 key: tianditu_key,
                 maxZoom: 18, minZoom: 2
@@ -96,11 +97,12 @@
             // "标注": BaiduAnnotionMap
         }
 
-        let crs = L.CRS.Baidu
+        // let crs = L.CRS.Baidu
+        let crs = L.CRS.EPSG3857
 
         let leaflet_map = L.map(div_id, {
             crs: crs,
-            center: [39.928, 116.404],
+            center: center,
             zoom: 13,
             layers: [GaoDeNormal],
             zoomControl: false
