@@ -7,15 +7,24 @@
   let markers = L.markerClusterGroup();
 
   {{ range .Pins }}
-  registerMark({{.Lng}}, {{.Lat}}, {{ .Location }}, {{.Note}}, markers)
+  registerMark({{.Lng}}, {{.Lat}}, {{ .Location }}, {{.Note}}, {{.UUID }} ,markers)
   {{ end }}
 
   leaflet_map.addLayer(markers);
   leaflet_map.flyToBounds(markers.getBounds())
 
-  function registerMark(lng,lat,name,note,markers) {
+  function registerMark(lng,lat,name,note,uuid, markers) {
       var marker = L.marker(new L.LatLng(lat, lng), { title: name });
-      marker.bindPopup('<h6>'+name+'</h6><p>'+note+'</p>');
+      marker.bindPopup(
+          '<h6>'+name+'</h6>' +
+          '<p>'+note+'</p>' +
+          '<p>' +
+              '<div>\n' +
+                  '<a href="/pin/edit?pid='+uuid+'">' +
+                    '<button type="button" class="btn btn-primary btn-xs">Edit</button>' +
+                  '</a>\n' +
+              '</div>' +
+          '</p>');
       markers.addLayer(marker);
   }
 </script>
