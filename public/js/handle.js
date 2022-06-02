@@ -71,6 +71,18 @@
             }),
             GeoQWarmM = L.tileLayer.chinaProvider('Geoq.Normal.Warm', {
                 maxZoom: 16, minZoom: 5
+            }),
+            GoogleNormalMap = L.tileLayer.chinaProvider('Google.Normal.Map', {
+                maxZoom: 18,
+                minZoom: 5
+            }),
+            GoogleSatelliteMap = L.tileLayer.chinaProvider('Google.Satellite.Map', {
+                maxZoom: 18,
+                minZoom: 5
+            }),
+            GoogleRouteMap = L.tileLayer.chinaProvider('Google.Satellite.Annotion', {
+                maxZoom: 18,
+                minZoom: 5
             });
 
         let GaoDeNormal = L.layerGroup([GaoDeNormalM]),
@@ -85,12 +97,16 @@
             "高德地图": GaoDeNormal,
             "高德影像": GaoDeImage,
             "百度地图": BaiduNormalMap,
-            "百度影像": BaiduImg,
+            "百度影像": BaiduSatelliteMap,
+            "百度路线": BaiduImg,
             "OSM": OSMNormalMap,
             "GeoQ": GeoQNormal,
             "GeoQ午夜蓝": GeoQPurplishBlueM,
             "GeoQ灰色": GeoQGrayM,
-            "GeoQ暖色": GeoQWarmM
+            "GeoQ暖色": GeoQWarmM,
+            "Google": GoogleNormalMap,
+            "Google卫星": GoogleSatelliteMap,
+            "Google路线": GoogleRouteMap
         }
 
         let overlayLayers = {
@@ -102,6 +118,7 @@
 
         let leaflet_map = L.map(div_id, {
             crs: crs,
+            fullscreenControl: true,
             center: center,
             zoom: 13,
             layers: [GaoDeNormal],
