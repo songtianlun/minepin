@@ -21,7 +21,6 @@
      * @param center
      * @returns {leaflet_map}
      */
-
     var initLeafletMap = function initLeafletMap(div_id, tianditu_key, center=[39.928, 116.404]) {
         let TianDiTuNormalM = L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {
                 key: tianditu_key,
@@ -49,16 +48,16 @@
                 maxZoom: 18, minZoom: 2
             }),
             GaoDeNormalM = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
-                maxZoom: 18, minZoom: 5
+                maxZoom: 18, minZoom: 2
             }),
             GaoDeImgM = L.tileLayer.chinaProvider('GaoDe.Satellite.Map', {
-                maxZoom: 18, minZoom: 5
+                maxZoom: 18, minZoom: 2
             }),
             GaoDeImgA = L.tileLayer.chinaProvider('GaoDe.Satellite.Annotion', {
-                maxZoom: 18, minZoom: 5
+                maxZoom: 18, minZoom: 2
             }),
             OSMNormalMap = L.tileLayer.chinaProvider('OSM.Normal.Map', {
-                maxZoom: 18, minZoom: 5,
+                maxZoom: 18, minZoom: 2,
             }),
             GeoQNormal = L.tileLayer.chinaProvider('Geoq.Normal.Map', {
                 maxZoom: 16, minZoom: 5
@@ -112,16 +111,20 @@
         let overlayLayers = {
             // "标注": BaiduAnnotionMap
         }
-
         // let crs = L.CRS.Baidu
         let crs = L.CRS.EPSG3857
+        if (getMapName() === '百度地图' ||
+            getMapName() === '百度影像' ||
+            getMapName() === '百度路线') {
+            crs = L.CRS.Baidu
+        }
 
         let leaflet_map = L.map(div_id, {
             crs: crs,
             fullscreenControl: true,
             center: center,
             zoom: 13,
-            layers: [GaoDeNormal],
+            layers: [baseLayers[getMapName()]],
             zoomControl: false,
             detectRetina: true
         });
@@ -136,7 +139,8 @@
 
         // 监听 layer 切换事件从而切换 crs
         leaflet_map.on("baselayerchange", function(e) {
-            console.log(e.name);
+            // console.log(e.name);
+            setMapName(e.name);
             if (e.name === "百度地图" || e.name === "百度影像") {
                 changeCRS(leaflet_map, L.CRS.Baidu)
             } else {
@@ -145,6 +149,18 @@
         });
 
         return leaflet_map
+    }
+
+    let setMapName = function(map_name) {
+        localStorage.setItem('minepin_map_name',map_name);
+    }
+
+    let getMapName = function() {
+        if (localStorage.getItem('minepin_map_name')) {
+            return localStorage.getItem('minepin_map_name');
+        } else {
+            return "高德地图";
+        }
     }
 
     var getMaxBounds = function getMaxBounds(crs) {
