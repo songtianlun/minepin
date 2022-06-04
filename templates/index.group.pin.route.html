@@ -10,10 +10,10 @@
   L.Routing.control({
       waypoints: [
           {{ range .Pins }}
-  new L.Routing.Waypoint(
-      L.latLng({{.Lat}}, {{.Lng}}), {{ .Location }}),
-  {{ end }}
-  ]
+          new L.Routing.Waypoint(
+              L.latLng({{.Lat}}, {{.Lng}}), {{ .Location }}),
+          {{ end }}
+          ]
   }).addTo(leaflet_map);
 
   {{ range .Pins }}
@@ -36,7 +36,8 @@
               '</div>' +
           '</p>');
       marker.addTo(leaflet_map);
-      markers.addLayer(marker);
+      marker.bindTooltip(name).openTooltip();
+      markers.addLayer(marker); // 用于确定缩放视角
   }
 </script>
 
