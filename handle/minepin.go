@@ -50,7 +50,7 @@ func CreatePin(writer http.ResponseWriter, request *http.Request) {
 		utils.ErrorMessage(writer, request, "Cannot create pin")
 		return
 	}
-	http.Redirect(writer, request, "/", 302)
+	http.Redirect(writer, request, "/minepin", 302)
 }
 
 func EditPin(writer http.ResponseWriter, request *http.Request) {

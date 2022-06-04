@@ -10,6 +10,7 @@ type PinGroup struct {
 	BaseModel
 	Name   string `json:"name"`
 	Note   string `json:"note"`
+	Type   string `json:"type" gorm:"default:'cluster'"`
 	UserId uint64 `json:"user_id"`
 }
 
@@ -17,12 +18,14 @@ type GroupBind struct {
 	Name   string `json:"name"`
 	UserId uint64 `json:"user_id"`
 	Note   string `json:"note"`
+	Type   string `json:"type"`
 }
 
 func (u *User) CreateGroup(gb GroupBind) (g PinGroup, err error) {
 	g = PinGroup{
 		Name:   gb.Name,
 		Note:   gb.Note,
+		Type:   gb.Type,
 		UserId: u.Id,
 	}
 	//err = db.DB.Create(&pin).Error
@@ -71,6 +74,7 @@ func (g *PinGroup) UpdateGroup() (err error) {
 	err = db.DB.Where("uuid = ?", g.UUID).Updates(PinGroup{
 		Name: g.Name,
 		Note: g.Note,
+		Type: g.Type,
 	}).Error
 	return
 }

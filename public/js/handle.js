@@ -120,6 +120,7 @@
         }
 
         let leaflet_map = L.map(div_id, {
+            attributionControl: true,
             crs: crs,
             fullscreenControl: true,
             center: center,
@@ -129,7 +130,9 @@
             detectRetina: true
         });
 
-        leaflet_map.attributionControl.addAttribution("MinePin");
+        leaflet_map.attributionControl.setPrefix(
+            "<a href='https://www.frytea.com'>🌱 Frytea</a> | " +
+            "<a href='http://minepin.frytea.com'>📌 MinePin</a>");
 
         L.control.layers(baseLayers, overlayLayers).addTo(leaflet_map);
         L.control.zoom({

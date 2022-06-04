@@ -19,4 +19,14 @@ const (
 	CRSBd09  = "BD09"
 	CRSWgs84 = "WGS84"
 	CRSGcj02 = "GCJ02"
+
+	PingsMapCluster = "cluster"
+	PingsMapRoute   = "route"
+)
+
+var (
+	PinsMapTypes = map[string]string{
+		"cluster": "点聚合图",
+		"route":   "路线图 (BETA)",
+	}
 )

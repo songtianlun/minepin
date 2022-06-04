@@ -1,6 +1,7 @@
 package handle
 
 import (
+	"minepin/com/constvar"
 	"minepin/com/log"
 	"minepin/com/utils"
 	"minepin/com/web"
@@ -41,12 +42,23 @@ func ShowGroup(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 	model.TransformPins(&pins)
-	web.GenerateHTML(writer, model.Pins{
-		Group:       group,
-		Pins:        pins,
-		BaiduAK:     user.BaiduAK(),
-		TianDiTuKey: user.TianDiTuKey(),
-	}, "layout", "private.navbar", "index.group.pin")
+	switch group.Type {
+	case constvar.PingsMapRoute:
+		web.GenerateHTML(writer, model.Pins{
+			Group:       group,
+			Pins:        pins,
+			BaiduAK:     user.BaiduAK(),
+			TianDiTuKey: user.TianDiTuKey(),
+		}, "layout", "private.navbar", "index.group.pin.route")
+	default:
+		web.GenerateHTML(writer, model.Pins{
+			Group:       group,
+			Pins:        pins,
+			BaiduAK:     user.BaiduAK(),
+			TianDiTuKey: user.TianDiTuKey(),
+		}, "layout", "private.navbar", "index.group.pin")
+	}
+
 }
 
 func CreateGroup(writer http.ResponseWriter, request *http.Request) {
@@ -65,7 +77,7 @@ func CreateGroup(writer http.ResponseWriter, request *http.Request) {
 	if _, err := user.CreateGroup(group); err != nil {
 		log.Error("Cannot create group")
 	}
-	http.Redirect(writer, request, "/", 302)
+	http.Redirect(writer, request, "/group", 302)
 }
 
 func EditGroup(writer http.ResponseWriter, request *http.Request) {
@@ -102,11 +114,12 @@ func UpdateGroup(writer http.ResponseWriter, request *http.Request) {
 	}
 	group.Name = request.PostFormValue("name")
 	group.Note = request.PostFormValue("note")
+	group.Type = request.PostFormValue("type")
 	if err := group.UpdateGroup(); err != nil {
 		utils.ErrorMessage(writer, request, "Cannot update group - "+err.Error())
 		return
 	}
-	http.Redirect(writer, request, "/", 302)
+	http.Redirect(writer, request, "/group", 302)
 }
 
 func DeleteGroup(writer http.ResponseWriter, request *http.Request) {
@@ -127,5 +140,5 @@ func DeleteGroup(writer http.ResponseWriter, request *http.Request) {
 		utils.ErrorMessage(writer, request, "Cannot delete group - "+err.Error())
 		return
 	}
-	http.Redirect(writer, request, "/", 302)
+	http.Redirect(writer, request, "/group", 302)
 }

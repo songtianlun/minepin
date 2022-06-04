@@ -1,29 +1,27 @@
 {{ define "content" }}
 
+<div>{{ .Group.Name }}</div>
 <div id="leaflet_map" style="margin: 20px auto;height: 500px;"></div>
 
 <script type="text/javascript">
   let leaflet_map = handle.initLeafletMap("leaflet_map", "{{ .TianDiTuKey }}");
   let markers = L.markerClusterGroup();
 
+  L.Routing.control({
+      waypoints: [
+          {{ range .Pins }}
+  new L.Routing.Waypoint(
+      L.latLng({{.Lat}}, {{.Lng}}), {{ .Location }}),
+  {{ end }}
+  ]
+  }).addTo(leaflet_map);
+
   {{ range .Pins }}
   registerMark({{.Lng}}, {{.Lat}}, {{ .Location }}, {{.Note}}, {{.UUID }} ,markers)
-  // markers.addLayer(L.marker(new L.LatLng({{.Lat}}, {{.Lng}}), { title: {{ .Location }} }).bindPopup({{ .Location }}))
   {{ end }}
-  // var marker = L.marker().bindPopup("北京市海淀区清华大学"));
 
-  // let marker = L.marker(new L.LatLng("40.002672142968564", "116.32070741028289"), { title: "北京市海淀区清华大学" });
-  // marker.bindPopup("北京市海淀区清华大学");
-  // markers.addLayer(marker);
-
-  leaflet_map.addLayer(markers);
+  // leaflet_map.addLayer(markers);
   leaflet_map.flyToBounds(markers.getBounds())
-
-  // L.Polyline.Arc(
-  //     {{ range .Pins }}
-  //     [{{.Lat}}, {{.Lng}}],
-  //     {{ end }}
-  // ).addTo(leaflet_map);
 
   function registerMark(lng,lat,name,note,uuid, markers) {
       var marker = L.marker(new L.LatLng(lat, lng), { title: name });
@@ -37,6 +35,7 @@
                   '</a>\n' +
               '</div>' +
           '</p>');
+      marker.addTo(leaflet_map);
       markers.addLayer(marker);
   }
 </script>

@@ -4,6 +4,7 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"minepin/com/cfg"
+	"minepin/com/constvar"
 	"time"
 )
 
@@ -30,4 +31,8 @@ func (bm *BaseModel) BaiduAK() string {
 
 func (bm *BaseModel) TianDiTuKey() string {
 	return cfg.GetString("TianDiTuKey")
+}
+
+func (bm *BaseModel) PingsMapTypes() map[string]string {
+	return constvar.PinsMapTypes
 }
