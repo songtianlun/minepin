@@ -23,6 +23,10 @@
   // leaflet_map.addLayer(markers);
   leaflet_map.flyToBounds(markers.getBounds())
 
+  leaflet_map.on('contextmenu', function(e) {
+      console.log(e)
+  })
+
   function registerMark(lng,lat,name,note,uuid, markers) {
       var marker = L.marker(new L.LatLng(lat, lng), { title: name });
       marker.bindPopup(
