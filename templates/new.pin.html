@@ -98,12 +98,15 @@
   function setPlace(){
     function myFun(){
       var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
-      document.getElementById("longitude").value=pp.lng
-      document.getElementById("latitude").value=pp.lat
+      // document.getElementById("longitude").value=pp.lng
+      // document.getElementById("latitude").value=pp.lat
+
       let gcj02 = coordtransform.bd09togcj02(pp.lng, pp.lat)
       let wgs84 = coordtransform.gcj02towgs84(gcj02[0], gcj02[1])
       // L.marker([]).addTo(leaflet_map)
       leaflet_marker = handle.addMarkerToLeaflet(wgs84[1], wgs84[0], leaflet_map, true)
+      document.getElementById("longitude").value=wgs84[0]
+      document.getElementById("latitude").value=wgs84[1]
       console.log(wgs84)
     }
     var local = new BMapGL.LocalSearch("中国", { //智能搜索
