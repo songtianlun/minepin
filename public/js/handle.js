@@ -140,6 +140,7 @@
             zoomOutTitle: '缩小'
         }).addTo(leaflet_map);
         L.control.scale().addTo(leaflet_map);
+        L.control.locate().addTo(leaflet_map);
 
         // 监听 layer 切换事件从而切换 crs
         leaflet_map.on("baselayerchange", function(e) {
