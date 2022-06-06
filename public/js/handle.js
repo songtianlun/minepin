@@ -24,70 +24,88 @@
     var initLeafletMap = function initLeafletMap(div_id, tianditu_key, mapbox_key, center=[39.928, 116.404]) {
         let TianDiTuNormalM = L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {
                 key: tianditu_key,
-                maxZoom: 18, minZoom: 2
+                maxZoom: 18, minZoom: 2,
+                attribution: "© <a href='http://lbs.tianditu.gov.cn'>天地图</a>"
             }),
             TianDiTuNormalA = L.tileLayer.chinaProvider('TianDiTu.Normal.Annotion', {
                 key: tianditu_key,
-                maxZoom: 18, minZoom: 2
+                maxZoom: 18, minZoom: 2,
+                attribution: "© <a href='http://lbs.tianditu.gov.cn'>天地图</a>"
             }),
             TianDiTuImgM = L.tileLayer.chinaProvider('TianDiTu.Satellite.Map', {
                 key: tianditu_key,
-                maxZoom: 18, minZoom: 2
+                maxZoom: 18, minZoom: 2,
+                attribution: "© <a href='http://lbs.tianditu.gov.cn'>天地图</a>"
             }),
             TianDiTuImgA = L.tileLayer.chinaProvider('TianDiTu.Satellite.Annotion', {
                 key: tianditu_key,
-                maxZoom: 18, minZoom: 2
+                maxZoom: 18, minZoom: 2,
+                attribution: "© <a href='http://lbs.tianditu.gov.cn'>天地图</a>"
             }),
             BaiduNormalMap = L.tileLayer.chinaProvider('Baidu.Normal.Map', {
-                maxZoom: 18, minZoom: 2
+                maxZoom: 18, minZoom: 2,
+                attribution: "© <a href='https://map.baidu.com'>百度地图</a>"
             }),
             BaiduSatelliteMap = L.tileLayer.chinaProvider('Baidu.Satellite.Map', {
-                maxZoom: 18, minZoom: 2
+                maxZoom: 18, minZoom: 2,
+                attribution: "© <a href='https://map.baidu.com'>百度地图</a>"
             }),
             BaiduAnnotionMap = L.tileLayer.chinaProvider('Baidu.Satellite.Annotion', {
-                maxZoom: 18, minZoom: 2
+                maxZoom: 18, minZoom: 2,
+                attribution: "© <a href='https://map.baidu.com'>百度地图</a>"
             }),
             GaoDeNormalM = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
-                maxZoom: 18, minZoom: 2
+                maxZoom: 18, minZoom: 2,
+                attribution: "© <a href='https://www.amap.com'>高德地图</a>"
             }),
             GaoDeImgM = L.tileLayer.chinaProvider('GaoDe.Satellite.Map', {
-                maxZoom: 18, minZoom: 2
+                maxZoom: 18, minZoom: 2,
+                attribution: "© <a href='https://www.amap.com'>高德地图</a>"
             }),
             GaoDeImgA = L.tileLayer.chinaProvider('GaoDe.Satellite.Annotion', {
-                maxZoom: 18, minZoom: 2
+                maxZoom: 18, minZoom: 2,
+                attribution: "© <a href='https://www.amap.com'>高德地图</a>"
             }),
             OSMNormalMap = L.tileLayer.chinaProvider('OSM.Normal.Map', {
                 maxZoom: 18, minZoom: 2,
+                attribution: "© <a href='https://www.openstreetmap.org'>OSM</a>"
             }),
             GeoQNormal = L.tileLayer.chinaProvider('Geoq.Normal.Map', {
-                maxZoom: 16, minZoom: 5
+                maxZoom: 16, minZoom: 5,
+                attribution: "© <a href='https://www.geoq.cn'>GeoQ</a>"
             }),
             GeoQPurplishBlueM = L.tileLayer.chinaProvider('Geoq.Normal.PurplishBlue', {
-                maxZoom: 16, minZoom: 5
+                maxZoom: 16, minZoom: 5,
+                attribution: "© <a href='https://www.geoq.cn'>GeoQ</a>"
             }),
             GeoQGrayM = L.tileLayer.chinaProvider('Geoq.Normal.Gray', {
-                maxZoom: 16, minZoom: 5
+                maxZoom: 16, minZoom: 5,
+                attribution: "© <a href='https://www.geoq.cn'>GeoQ</a>"
             }),
             GeoQWarmM = L.tileLayer.chinaProvider('Geoq.Normal.Warm', {
-                maxZoom: 16, minZoom: 5
+                maxZoom: 16, minZoom: 5,
+                attribution: "© <a href='https://www.geoq.cn'>GeoQ</a>"
             }),
             GoogleNormalMap = L.tileLayer.chinaProvider('Google.Normal.Map', {
                 maxZoom: 18,
-                minZoom: 5
+                minZoom: 5,
+                attribution: "© <a href='https://www.google.com/maps'>Google Map</a>"
             }),
             GoogleSatelliteMap = L.tileLayer.chinaProvider('Google.Satellite.Map', {
                 maxZoom: 18,
-                minZoom: 5
+                minZoom: 5,
+                attribution: "© <a href='https://www.google.com/maps'>Google Map</a>"
             }),
             GoogleRouteMap = L.tileLayer.chinaProvider('Google.Satellite.Annotion', {
                 maxZoom: 18,
-                minZoom: 5
+                minZoom: 5,
+                attribution: "© <a href='https://www.google.com/maps'>Google Map</a>"
             }),
             MapBox = new L.TileLayer(
                 '//api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/{z}/{x}/{y}@2x?access_token=' +
                 mapbox_key, {
                 attribution:
-                    'Map data © <a href="http://osm.org/copyright">OpenStreetMap</a> contributors. Tiles from <a href="https://www.mapbox.com">Mapbox</a>.',
+                    '© <a href="http://osm.org/copyright">OSM</a> with <a href="https://www.mapbox.com">Mapbox</a>.',
                 tileSize: 512,
                 zoomOffset: -1
             });
