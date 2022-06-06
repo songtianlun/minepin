@@ -82,6 +82,15 @@
             GoogleRouteMap = L.tileLayer.chinaProvider('Google.Satellite.Annotion', {
                 maxZoom: 18,
                 minZoom: 5
+            }),
+            MapBox = new L.TileLayer(
+                '//api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/{z}/{x}/{y}@2x?access_token=' +
+                'sk.eyJ1Ijoic29uZ3RpYW5sdW4iLCJhIjoiY2w0Mms3aDduMDVuYTNmbWwxcnk3ZTFhZCJ9.0J3s1k_txufnnMpLqRf1UQ'
+                , {
+                attribution:
+                    'Map data © <a href="http://osm.org/copyright">OpenStreetMap</a> contributors. Tiles from <a href="https://www.mapbox.com">Mapbox</a>.',
+                tileSize: 512,
+                zoomOffset: -1
             });
 
         let GaoDeNormal = L.layerGroup([GaoDeNormalM]),
@@ -105,7 +114,8 @@
             "GeoQ暖色": GeoQWarmM,
             "Google": GoogleNormalMap,
             "Google卫星": GoogleSatelliteMap,
-            "Google路线": GoogleRouteMap
+            "Google路线": GoogleRouteMap,
+            "MapBox": MapBox
         }
 
         let overlayLayers = {
@@ -164,7 +174,7 @@
         if (localStorage.getItem('minepin_map_name')) {
             return localStorage.getItem('minepin_map_name');
         } else {
-            return "高德地图";
+            return "MapBox";
         }
     }
 
