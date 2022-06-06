@@ -33,6 +33,10 @@ func (bm *BaseModel) TianDiTuKey() string {
 	return cfg.GetString("TianDiTuKey")
 }
 
+func (bm *BaseModel) MapBoxKey() string {
+	return cfg.GetString("MapBoxKey")
+}
+
 func (bm *BaseModel) PingsMapTypes() map[string]string {
 	return constvar.PinsMapTypes
 }

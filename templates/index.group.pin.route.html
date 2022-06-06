@@ -4,7 +4,7 @@
 <div id="leaflet_map" style="margin: 20px auto;height: 500px;"></div>
 
 <script type="text/javascript">
-  let leaflet_map = handle.initLeafletMap("leaflet_map", "{{ .TianDiTuKey }}");
+  let leaflet_map = handle.initLeafletMap("leaflet_map", "{{ .TianDiTuKey }}", "{{ .MapBoxKey }}");
   let markers = L.markerClusterGroup();
 
   L.Routing.control({

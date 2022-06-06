@@ -21,7 +21,7 @@
      * @param center
      * @returns {leaflet_map}
      */
-    var initLeafletMap = function initLeafletMap(div_id, tianditu_key, center=[39.928, 116.404]) {
+    var initLeafletMap = function initLeafletMap(div_id, tianditu_key, mapbox_key, center=[39.928, 116.404]) {
         let TianDiTuNormalM = L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {
                 key: tianditu_key,
                 maxZoom: 18, minZoom: 2
@@ -85,8 +85,7 @@
             }),
             MapBox = new L.TileLayer(
                 '//api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/{z}/{x}/{y}@2x?access_token=' +
-                'sk.eyJ1Ijoic29uZ3RpYW5sdW4iLCJhIjoiY2w0Mms3aDduMDVuYTNmbWwxcnk3ZTFhZCJ9.0J3s1k_txufnnMpLqRf1UQ'
-                , {
+                mapbox_key, {
                 attribution:
                     'Map data © <a href="http://osm.org/copyright">OpenStreetMap</a> contributors. Tiles from <a href="https://www.mapbox.com">Mapbox</a>.',
                 tileSize: 512,

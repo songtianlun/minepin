@@ -49,6 +49,7 @@ func ShowGroup(writer http.ResponseWriter, request *http.Request) {
 			Pins:        pins,
 			BaiduAK:     user.BaiduAK(),
 			TianDiTuKey: user.TianDiTuKey(),
+			MapBoxKey:   user.MapBoxKey(),
 		}, "layout", "private.navbar", "index.group.pin.route")
 	default:
 		web.GenerateHTML(writer, model.Pins{
@@ -56,6 +57,7 @@ func ShowGroup(writer http.ResponseWriter, request *http.Request) {
 			Pins:        pins,
 			BaiduAK:     user.BaiduAK(),
 			TianDiTuKey: user.TianDiTuKey(),
+			MapBoxKey:   user.MapBoxKey(),
 		}, "layout", "private.navbar", "index.group.pin")
 	}
 

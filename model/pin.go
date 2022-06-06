@@ -34,6 +34,7 @@ type Pins struct {
 	Pins        []Pin
 	BaiduAK     string
 	TianDiTuKey string
+	MapBoxKey   string
 }
 
 func (u *User) CreatePin(pb PinBind) (pin Pin, err error) {
