@@ -89,6 +89,10 @@ func (u *User) TransfromWithBD09() {
 	}
 }
 
+func (u *User) GetPinCount() int64 {
+	return db.DB.Model(&u).Association("Pins").Count()
+}
+
 func (p *Pin) User() (user User) {
 	db.DB.First(&user, p.UserId)
 	return

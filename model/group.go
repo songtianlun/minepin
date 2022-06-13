@@ -55,6 +55,10 @@ func (u *User) ShowPinsByGroupID(gid uint64) (pins []Pin, err error) {
 	return
 }
 
+func (u *User) GetGroupCount() int64 {
+	return db.DB.Model(&u).Association("Groups").Count()
+}
+
 func (g *PinGroup) User() (user User) {
 	db.DB.First(&user, g.UserId)
 	return

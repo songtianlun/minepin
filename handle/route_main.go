@@ -29,6 +29,10 @@ func Index(writer http.ResponseWriter, request *http.Request) {
 		if err != nil {
 			utils.ErrorMessage(writer, request, "failed to get user.")
 		}
-		web.GenerateHTML(writer, user, "layout", "private.navbar", "index")
+		web.GenerateHTML(writer, model.IndexModel{
+			User:       user,
+			PinCount:   user.GetPinCount(),
+			GroupCount: user.GetGroupCount(),
+		}, "layout", "private.navbar", "private.index")
 	}
 }

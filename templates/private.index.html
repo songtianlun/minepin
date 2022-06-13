@@ -1,0 +1,90 @@
+{{ define "content" }}
+<!--<p class="lead justify-content-center text-center" style="height: 300px">-->
+<!--  简单高效的地理位置收藏夹，快速收藏、分类整理。</br>-->
+<!--</p>-->
+<section class="highlight-clean">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-left bounce animated"><strong>Hi, {{.User.Name}}! 👏👏👏</strong></h2>
+            <p class="text-left bounce animated">欢迎使用 MinePin，一个简单高效的地理位置收藏夹，可用于快速收藏、分类整理与位置信息相关的笔记。
+                <br />
+                <br />
+                截止目前，您已经收藏了 <strong>{{ .PinCount }}</strong> 个 📌 图钉，创建了 <strong>{{ .GroupCount }}</strong> 个 📦 图钉组。
+                <br />
+                <br />
+                祝使用愉快。
+            </p>
+        </div>
+        <div class="buttons">
+            <a class="btn btn-primary" role="button" href="/minepin"><strong>📌 PINS</strong></a>
+            <a class="btn btn-default" role="button" href="/group"><strong>📦 GROUPS</strong></a></div>
+    </div>
+</section>
+
+<style>
+    .highlight-clean {
+        color: #313437;
+        background-color: #fff;
+        padding: 50px 0;
+    }
+
+    .highlight-clean p {
+        color: #7d8285;
+    }
+
+    .highlight-clean h2 {
+        font-weight: bold;
+        margin-bottom: 25px;
+        line-height: 1.5;
+        padding-top: 0;
+        margin-top: 0;
+        color: inherit;
+    }
+
+    .highlight-clean .intro {
+        font-size: 16px;
+        max-width: 500px;
+        margin: 0 auto 25px;
+    }
+
+    .highlight-clean .buttons {
+        text-align: center;
+    }
+
+    .highlight-clean .buttons .btn {
+        padding: 16px 32px;
+        margin: 6px;
+        border: none;
+        background: none;
+        box-shadow: none;
+        text-shadow: none;
+        opacity: 0.9;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 13px;
+        letter-spacing: 0.4px;
+        line-height: 1;
+        outline: none;
+    }
+
+    .highlight-clean .buttons .btn:hover {
+        opacity: 1;
+    }
+
+    .highlight-clean .buttons .btn:active {
+        transform: translateY(1px);
+    }
+
+    .highlight-clean .buttons .btn-primary {
+        background-color: #055ada;
+        color: #fff;
+    }
+
+    .highlight-clean .buttons .btn-default {
+        background-color: #e6e7ea;
+        color: inherit;
+    }
+</style>
+
+{{ end }}
+
