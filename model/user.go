@@ -28,6 +28,9 @@ type Session struct {
 
 func (u *User) Create() error {
 	u.Password = utils.Encrypt(u.Password)
+	if u.Email == "" {
+		return fmt.Errorf("email is empty")
+	}
 	u.CreateDefaultGroup()
 	return db.DB.Create(&u).Error
 }

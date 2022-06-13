@@ -1,6 +1,7 @@
 {{ define "content" }}
 
-<form class="form-signin" role="form" action="/signup_account" method="post">
+<form class="form-signin" role="form" action="/signup_account" method="post"
+      onsubmit="return handle.checkHttps();">
   <h2 class="form-signin-heading">
     <i class="fa fa-map-marker">
       MinePin

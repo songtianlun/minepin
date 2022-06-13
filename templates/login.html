@@ -1,6 +1,7 @@
 {{ define "content" }}
 
-<form class="form-signin center" role="form" action="/authenticate" method="post">
+<form class="form-signin center" role="form" action="/authenticate" method="post"
+      onsubmit="return handle.checkHttps();">
   <h2 class="form-signin-heading">
     <i class="fa fa-map-marker">
       MinePin
@@ -13,5 +14,6 @@
   <br/>
   <a class="lead pull-right" href="/signup">Sign up</a>
 </form>
+
 
 {{ end }}
