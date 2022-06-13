@@ -197,7 +197,7 @@
         }
     }
 
-    var getMaxBounds = function getMaxBounds(crs) {
+    let getMaxBounds = function getMaxBounds(crs) {
         const { bounds } = crs.projection;
         return new L.LatLngBounds(
             crs.unproject(bounds.min),
@@ -205,7 +205,7 @@
         );
     }
 
-    var changeCRS = function changeCRS(map, crs) {
+    let changeCRS = function changeCRS(map, crs) {
         const bounds = map.getBounds();
         map.options.crs = crs;
         // Ensure zoom is not affected by differing CRS scales
@@ -215,24 +215,24 @@
         map.options.zoomSnap = 1;
     }
 
-    var setLeafletCenter = function setLeafletCenter(lat,lng, map) {
+    let setLeafletCenter = function setLeafletCenter(lat,lng, map) {
         map.setView(new L.LatLng(lat, lng));
     }
 
-    var addMarkerToLeaflet = function addMarkerToLeaflet(lat,lng, map, setCenter=false) {
+    let addMarkerToLeaflet = function addMarkerToLeaflet(lat,lng, map, setCenter=false) {
         if (setCenter === true) {
             setLeafletCenter(lat,lng, map)
         }
         return L.marker([lat, lng]).addTo(map);
     }
 
-    var removeMarkerLayer = function removeMarkerLayer(markerLayer, map) {
+    let removeMarkerLayer = function removeMarkerLayer(markerLayer, map) {
         if (markerLayer) {
             map.removeLayer(markerLayer);
         }
     }
 
-    var checkHttps = function checkHttps(access_local=true) {
+    let checkHttps = function checkHttps(access_local=true) {
         if (location.protocol !== "https:") {
             if ((location.hostname === "localhost" ||
                 location.hostname === "127.0.0.1") &&

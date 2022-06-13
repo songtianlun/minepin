@@ -75,6 +75,7 @@ func (u *User) CreateDefaultGroup() {
 	}
 	gs = append(gs, PinGroup{
 		Name: "Default",
+		Note: "Default Pin Group.",
 	})
 	u.Groups = gs
 	return
