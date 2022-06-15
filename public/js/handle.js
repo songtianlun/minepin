@@ -156,7 +156,7 @@
             zoom: 13,
             layers: [baseLayers[getMapName()]],
             zoomControl: false,
-            detectRetina: true
+            detectRetina: false
         });
 
         leaflet_map.attributionControl.setPrefix(
