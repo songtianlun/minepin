@@ -10,6 +10,7 @@
 
   {{ range .Pins }}
   registerMark({{.Lng}}, {{.Lat}}, {{ .Location }}, {{.Note}}, {{.UUID }} ,markers)
+  leaflet_map.setView(new L.LatLng("{{ .Lat }}", "{{ .Lng }}"), 15)
   // markers.addLayer(L.marker(new L.LatLng({{.Lat}}, {{.Lng}}), { title: {{ .Location }} }).bindPopup({{ .Location }}))
   {{ end }}
   // var marker = L.marker().bindPopup("北京市海淀区清华大学"));
