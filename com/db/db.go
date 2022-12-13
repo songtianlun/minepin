@@ -53,16 +53,16 @@ func InitDB(c *CfgDb) {
 	default:
 		panic("unknown database type: " + c.Typ)
 	}
-	log.InfoF("connected to %s with %s",
+	log.Infof("connected to %s with %s",
 		c.Addr, c.Typ)
 
 	DB = gdb
-	//DB = &Database{
+	// DB = &Database{
 	//	DB: gdb,
-	//}
+	// }
 
-	//err := DB.Callback().Query().Register("check_acl", CheckACL)
-	//if err != nil {
+	// err := DB.Callback().Query().Register("check_acl", CheckACL)
+	// if err != nil {
 	//	log.Error("Error of Register Callback - " + err.Error())
-	//}
+	// }
 }

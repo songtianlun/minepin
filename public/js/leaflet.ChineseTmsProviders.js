@@ -83,7 +83,8 @@ L.TileLayer.ChinaProvider.providers = {
     GaoDe: {
         Normal: {
             // Map: '//webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}'
-            Map: '//wprd0{s}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=7'
+            // Map: '//wprd0{s}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=7'
+            Map: '//webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=4&scale=4&style=8&x={x}&y={y}&z={z}'
         },
         Satellite: {
             Map: '//webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',

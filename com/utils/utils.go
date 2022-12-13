@@ -41,10 +41,6 @@ func Float64ToStr(f float64) string {
 	return strconv.FormatFloat(f, 'f', -1, 64)
 }
 
-func P(a ...interface{}) {
-	fmt.Println(a)
-}
-
 // ErrorMessage Convenience function to redirect to the error message page
 func ErrorMessage(writer http.ResponseWriter, request *http.Request, msg string) {
 	url := []string{"/err?msg=", msg}
@@ -52,7 +48,7 @@ func ErrorMessage(writer http.ResponseWriter, request *http.Request, msg string)
 }
 
 // Checks if the user is logged in and has a Session, if not err is not nil
-//func Session(writer web.ResponseWriter, request *web.Request) (sess model.Session, err error) {
+// func Session(writer web.ResponseWriter, request *web.Request) (sess model.Session, err error) {
 //	cookie, err := request.Cookie("_cookie")
 //	if err == nil {
 //		sess = model.Session{
@@ -63,7 +59,7 @@ func ErrorMessage(writer http.ResponseWriter, request *http.Request, msg string)
 //		}
 //	}
 //	return
-//}
+// }
 
 // parse HTML templates
 // pass in a list of file names, and get a template
@@ -77,7 +73,7 @@ func ParseTemplateFiles(filenames ...string) (t *template.Template) {
 	return
 }
 
-//func GenerateHTML(writer web.ResponseWriter, data interface{}, filenames ...string) {
+// func GenerateHTML(writer web.ResponseWriter, data interface{}, filenames ...string) {
 //	var files []string
 //	for _, file := range filenames {
 //		files = append(files, fmt.Sprintf("templates/%s.html", file))
@@ -86,9 +82,9 @@ func ParseTemplateFiles(filenames ...string) (t *template.Template) {
 //	templates := template.Must(template.ParseFiles(files...))
 //	err := templates.ExecuteTemplate(writer, "layout", data)
 //	if err != nil {
-//		log.ErrorF("Generate HTML error: %v", err.Error())
+//		log.Errorf("Generate HTML error: %v", err.Error())
 //	}
-//}
+// }
 
 // Version
 func Version() string {
@@ -98,4 +94,8 @@ func Version() string {
 func Encrypt(plaintext string) (cryptext string) {
 	cryptext = fmt.Sprintf("%x", sha1.Sum([]byte(plaintext)))
 	return
+}
+
+func GetTypeString(i interface{}) string {
+	return fmt.Sprintf("%T", i)
 }

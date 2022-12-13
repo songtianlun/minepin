@@ -12,14 +12,15 @@ import (
 // GET /login
 // Show the Login page
 func Login(writer http.ResponseWriter, request *http.Request) {
-	t := utils.ParseTemplateFiles("login.layout", "public.navbar", "login")
-	t.Execute(writer, nil)
+	// t := utils.ParseTemplateFiles("login.layout", "public.navbar", "login")
+	// t.Execute(writer, nil)
+	web.GetInstance().GenerateHTML(writer, nil, "login.layout", "public.navbar", "login")
 }
 
 // GET /signup
 // Show the Signup page
 func Signup(writer http.ResponseWriter, request *http.Request) {
-	web.GenerateHTML(writer, nil, "login.layout", "public.navbar", "signup")
+	web.GetInstance().GenerateHTML(writer, nil, "login.layout", "public.navbar", "signup")
 }
 
 // POST /signup
@@ -41,8 +42,7 @@ func SignupAccount(writer http.ResponseWriter, request *http.Request) {
 	http.Redirect(writer, request, "/login", 302)
 }
 
-// POST /authenticate
-// Authenticate the user given the email and password
+// Authenticate the user given the email and password,  POST /authenticate
 func Authenticate(writer http.ResponseWriter, request *http.Request) {
 	err := request.ParseForm()
 	user, err := model.UserByEmail(request.PostFormValue("email"))
@@ -53,7 +53,7 @@ func Authenticate(writer http.ResponseWriter, request *http.Request) {
 		user.CloseAllSession()
 		session, err := user.CreateSession()
 		if err != nil {
-			log.ErrorF("Cannot create session - %v", err.Error())
+			log.Errorf("Cannot create session - %v", err.Error())
 		}
 		cookie := http.Cookie{
 			Name:     "_cookie",

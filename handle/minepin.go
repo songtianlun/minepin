@@ -14,12 +14,12 @@ func MinePinIndex(writer http.ResponseWriter, request *http.Request) {
 		utils.ErrorMessage(writer, request, "Cannot get threads")
 		return
 	}
-	web.GenerateHTML(writer, pins, "layout", "private.navbar", "index.minepin")
+	web.GetInstance().GenerateHTML(writer, pins, "layout", "private.navbar", "index.minepin")
 }
 
 func NewPin(writer http.ResponseWriter, request *http.Request) {
 	user, _ := model.GetUser(request)
-	web.GenerateHTML(writer, &model.Pin{UserId: user.Id}, "layout", "private.navbar", "new.pin")
+	web.GetInstance().GenerateHTML(writer, &model.Pin{UserId: user.Id}, "layout", "private.navbar", "new.pin")
 }
 
 func CreatePin(writer http.ResponseWriter, request *http.Request) {
@@ -65,7 +65,7 @@ func EditPin(writer http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		utils.ErrorMessage(writer, request, "Cannot get pin")
 	}
-	web.GenerateHTML(writer, &pin, "layout", "private.navbar", "private.pin")
+	web.GetInstance().GenerateHTML(writer, &pin, "layout", "private.navbar", "private.pin")
 }
 
 func UpdatePin(writer http.ResponseWriter, request *http.Request) {

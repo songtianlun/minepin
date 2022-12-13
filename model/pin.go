@@ -47,16 +47,16 @@ func (u *User) CreatePin(pb PinBind) (pin Pin, err error) {
 		UserId:   u.Id,
 		GroupId:  pb.Group.Id,
 	}
-	//err = db.DB.Create(&pin).Error
+	// err = db.DB.Create(&pin).Error
 	err = db.DB.Model(&u).Association("Pins").Append(&pin)
 	return
 }
 
 func (u *User) PinList() (pins []Pin, err error) {
 	err = db.DB.Model(&u).Order("createdAt desc").Association("Pins").Find(&pins)
-	//for i, p := range pins {
+	// for i, p := range pins {
 	//	pins[i].Group, _ = u.GetGroupByID(p.GroupId)
-	//}
+	// }
 	TransformPins(&pins)
 	if err != nil {
 		return nil, err
@@ -82,7 +82,7 @@ func (u *User) TransfromWithBD09() {
 			pin.TransformBD09()
 			err := pin.UpdatePin()
 			if err != nil {
-				log.ErrorF("Trans BD09 with pin [UUID=%v] failed - %v",
+				log.Errorf("Trans BD09 with pin [UUID=%v] failed - %v",
 					pin.UUID, err.Error())
 			}
 		}
@@ -104,10 +104,10 @@ func (p *Pin) Groups() (groups []PinGroup) {
 	return
 }
 
-//func (p *Pin) GetGroup() (group PinGroup) {
+// func (p *Pin) GetGroup() (group PinGroup) {
 //	groups, _ = db.DB.Model(&p).Association("Group").Find(&group)
 //	return
-//}
+// }
 
 func (p *Pin) UpdatePin() (err error) {
 	// 保证仅更新非零字段
@@ -118,7 +118,7 @@ func (p *Pin) UpdatePin() (err error) {
 		Note:     p.Note,
 		GroupId:  p.Group.Id,
 		CRS:      p.CRS,
-		//Group:    p.Group,
+		// Group:    p.Group,
 	}).Error
 	return
 }
@@ -142,7 +142,7 @@ func TransformPins(pins *[]Pin) {
 	}
 }
 
-//func GetPinByUUID(pid string) (p Pin, err error) {
+// func GetPinByUUID(pid string) (p Pin, err error) {
 //	err = db.DB.Where("uuid = ?", pid).First(&p).Error
 //	return
-//}
+// }

@@ -15,11 +15,11 @@ func PinGroupIndex(writer http.ResponseWriter, request *http.Request) {
 		utils.ErrorMessage(writer, request, "Cannot get threads")
 		return
 	}
-	web.GenerateHTML(writer, pins, "layout", "private.navbar", "index.group")
+	web.GetInstance().GenerateHTML(writer, pins, "layout", "private.navbar", "index.group")
 }
 
 func NewGroup(writer http.ResponseWriter, request *http.Request) {
-	web.GenerateHTML(writer, &model.Pin{}, "layout", "private.navbar", "new.group")
+	web.GetInstance().GenerateHTML(writer, &model.Pin{}, "layout", "private.navbar", "new.group")
 }
 
 func ShowGroup(writer http.ResponseWriter, request *http.Request) {
@@ -44,7 +44,7 @@ func ShowGroup(writer http.ResponseWriter, request *http.Request) {
 	model.TransformPins(&pins)
 	switch group.Type {
 	case constvar.PingsMapRoute:
-		web.GenerateHTML(writer, model.Pins{
+		web.GetInstance().GenerateHTML(writer, model.Pins{
 			Group:       group,
 			Pins:        pins,
 			BaiduAK:     user.BaiduAK(),
@@ -52,7 +52,7 @@ func ShowGroup(writer http.ResponseWriter, request *http.Request) {
 			MapBoxKey:   user.MapBoxKey(),
 		}, "layout", "private.navbar", "index.group.pin.route")
 	default:
-		web.GenerateHTML(writer, model.Pins{
+		web.GetInstance().GenerateHTML(writer, model.Pins{
 			Group:       group,
 			Pins:        pins,
 			BaiduAK:     user.BaiduAK(),
@@ -94,7 +94,7 @@ func EditGroup(writer http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		utils.ErrorMessage(writer, request, "Cannot get group")
 	}
-	web.GenerateHTML(writer, &group, "layout", "private.navbar", "private.group")
+	web.GetInstance().GenerateHTML(writer, &group, "layout", "private.navbar", "private.group")
 }
 
 func UpdateGroup(writer http.ResponseWriter, request *http.Request) {

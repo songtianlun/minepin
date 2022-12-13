@@ -19,5 +19,10 @@ func main() {
 
 	Addr := ":" + strconv.FormatInt(cfg.GetInt64("Port"), 10)
 	log.Info("Minepin "+utils.Version()+" started at ", Addr)
-	web.Run(Addr)
+	// web.Run(Addr)
+	err := web.GetInstance().Run(Addr)
+	if err != nil {
+		log.Errorf("web server error: %s", err.Error())
+		return
+	}
 }
