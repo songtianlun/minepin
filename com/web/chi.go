@@ -4,13 +4,14 @@ import (
 	"context"
 	"embed"
 	"fmt"
-	"github.com/go-chi/chi/v5"
 	"html/template"
 	"io/fs"
 	"minepin/com/log"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/go-chi/chi/v5"
 )
 
 type chiWeb struct {
@@ -57,7 +58,23 @@ func (cw *chiWeb) RegisterEmbedWithSub(path, stripPrefix, subPath string, efs *e
 		panic("register embed with sub error: " + err.Error())
 	}
 
-	cw.r.Get(path, func(writer http.ResponseWriter, request *http.Request) {
+	routePath := strings.TrimSuffix(path, "*")
+	routePath = strings.TrimSuffix(routePath, "/")
+	if routePath == "" {
+		routePath = "/"
+	}
+
+	if routePath != "/" {
+		cw.r.Get(routePath, http.RedirectHandler(routePath+"/", 301).ServeHTTP)
+	}
+
+	fileRoute := routePath
+	if fileRoute != "/" {
+		fileRoute += "/"
+	}
+	fileRoute += "*"
+
+	cw.r.Get(fileRoute, func(writer http.ResponseWriter, request *http.Request) {
 		if stripPrefix != "" {
 			http.StripPrefix(stripPrefix, http.FileServer(http.FS(nfs))).ServeHTTP(writer, request)
 		} else {
